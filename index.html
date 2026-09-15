@@ -19,12 +19,6 @@
       100% { transform: scale(1); opacity: 1; }
     }
     .animate-pop { animation: popZoom 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-    @keyframes countPulse {
-      0% { transform: scale(0.6); opacity: 0.2; }
-      50% { transform: scale(1.15); opacity: 1; }
-      100% { transform: scale(1); opacity: 1; }
-    }
-    .animate-count { animation: countPulse 0.9s infinite alternate; }
   </style>
 </head>
 <body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col justify-between select-none">
@@ -49,7 +43,7 @@
   <!-- Main Container -->
   <main class="flex-1 flex flex-col items-center justify-center p-3 sm:p-6 w-full max-w-5xl mx-auto">
     
-    <!-- Step 1: Animated Welcome & Countdown Screen (No Audio) -->
+    <!-- Step 1: Motivation & Direct Start Screen -->
     <div id="motivationScreen" class="w-full max-w-lg bg-slate-800 border-2 border-cyan-500/60 rounded-3xl p-8 sm:p-10 shadow-2xl text-center space-y-6 animate-pop">
       <div class="w-20 h-20 bg-gradient-to-tr from-cyan-500 to-blue-600 rounded-full flex items-center justify-center mx-auto text-4xl shadow-xl animate-bounce">
         ⚡
@@ -64,9 +58,12 @@
         <p class="text-slate-300">നെഗറ്റീവ് മാർക്കുകൾ പരമാവധി ഒഴിവാക്കി ആത്മവിശ്വാസത്തോടെ ചോദ്യങ്ങൾക്ക് ഉത്തരം നൽകുക!</p>
       </div>
 
+      <!-- പരീക്ഷ ആരംഭിക്കുക ബട്ടൺ -->
       <div class="pt-2">
-        <span class="text-xs font-semibold text-slate-400 block mb-2 uppercase tracking-wide">പരീക്ഷ ആരംഭിക്കുന്നു...</span>
-        <div id="countdownNumber" class="text-6xl font-black text-cyan-400 font-mono animate-count">3</div>
+        <button type="button" onclick="startExamDirectly()" class="w-full py-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 text-slate-950 font-black rounded-2xl transition transform active:scale-95 shadow-xl text-base flex items-center justify-center space-x-2 cursor-pointer">
+          <span>പരീക്ഷ ആരംഭിക്കുക</span>
+          <span>🚀</span>
+        </button>
       </div>
     </div>
 
@@ -218,10 +215,10 @@
   </footer>
 
   <script>
-    const GOOGLE_SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzz16_cHXqIxioiMN1INEK6z_29Q7nnroM02tNgHapEx3ng8ngIgGmXOMXO3icNydE/exec";[cite: 5]
-    const QUIZ_SHEET_NAME = "Physics_Set1";[cite: 5]
-    const ORIGINAL_PDF_URL = "https://drive.google.com/file/d/1TBwJzSOe70DR5r9h6S5yFUxvL2bZMvye/view?usp=sharing";[cite: 5]
-    let examTitle = "ഫിസിക്സ് (Physics) - സെറ്റ് 1";[cite: 5]
+    let GOOGLE_SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzz16_cHXqIxioiMN1INEK6z_29Q7nnroM02tNgHapEx3ng8ngIgGmXOMXO3icNydE/exec";
+    const QUIZ_SHEET_NAME = "Physics_Set1";
+    let ORIGINAL_PDF_URL = "https://drive.google.com/file/d/1TBwJzSOe70DR5r9h6S5yFUxvL2bZMvye/view?usp=sharing";
+    let examTitle = "ഫിസിക്സ് (Physics) - സെറ്റ് 1";
 
     const questionsData = [
       { q: "ഒരു വസ്തുവിന്റെ പ്രവേഗത്തിൽ ഉണ്ടാകുന്ന മാറ്റത്തിന്റെ നിരക്ക് (Rate of change of velocity) ഏത് ഭൗതിക അളവാണ്?", options: ["വേഗത", "ത്വരണം", "സംവേഗം", "സ്ഥാനാന്തരം"], ans: 1, exp: "സമയത്തിനനുസരിച്ച് പ്രവേഗത്തിലുണ്ടാകുന്ന മാറ്റത്തിന്റെ നിരക്കാണ് ത്വരണം. ഇതിന്റെ SI യൂണിറ്റ് മീറ്റർ / സെക്കൻഡ്² (m/s²) ആണ്." },
@@ -282,7 +279,7 @@
     let timeLeft = 50 * 60;
     let timerInterval = null;
 
-    // 🌟 URL-ൽ നിന്ന് വിവരങ്ങൾ എടുത്ത് 3 സെക്കൻഡ് കൗണ്ട്ഡൗണിന് ശേഷം പരീക്ഷ തുടങ്ങുന്നു (ഓഡിയോ ഇല്ല)
+    // 🌟 മോട്ടിവേഷൻ സ്ക്രീനും 3 സെക്കൻഡ് കൗണ്ട്ഡൗണും (ഓഡിയോ ഇല്ല)
     window.addEventListener('DOMContentLoaded', () => {
       const urlParams = new URLSearchParams(window.location.search);
       const passedName = urlParams.get('name');
@@ -314,10 +311,11 @@
 
       const countdownTimer = setInterval(() => {
         count--;
-        if (count > 0) {
-          if (countElem) countElem.innerText = count;
-        } else {
+        if (countElem) countElem.innerText = count;
+
+        if (count <= 0) {
           clearInterval(countdownTimer);
+
           const motScreen = document.getElementById('motivationScreen');
           if (motScreen) motScreen.classList.add('hidden');
 
@@ -332,6 +330,22 @@
           startTimer();
         }
       }, 1000);
+    }
+
+    // പരീക്ഷ നേരിട്ട് തുടങ്ങാനുള്ള ബട്ടൺ ഫംഗ്ഷൻ (മോട്ടിവേഷൻ സ്ക്രീനിലെ ബട്ടണിനായി)
+    function startExamDirectly() {
+      const motScreen = document.getElementById('motivationScreen');
+      if (motScreen) motScreen.classList.add('hidden');
+
+      const qScreen = document.getElementById('quizScreen');
+      if (qScreen) {
+        qScreen.classList.remove('hidden');
+        qScreen.classList.add('flex');
+      }
+
+      buildPalette();
+      renderQuestion(0);
+      startTimer();
     }
 
     function startTimer() {
@@ -736,35 +750,6 @@
       const skipped = document.getElementById('skipCount').innerText;
 
       window.location.href = `${homePortalUrl}?completed=true&title=${encodeURIComponent(examTitle)}&score=${score}&correct=${correct}&wrong=${wrong}&skipped=${skipped}`;
-    }function startCountdownAndStartExam() {
-      let count = 3;
-      const countElem = document.getElementById('countdownNumber');
-      if (countElem) countElem.innerText = count;
-
-      const countdownTimer = setInterval(() => {
-        count--;
-        if (countElem) countElem.innerText = count;
-
-        if (count <= 0) {
-          clearInterval(countdownTimer);
-
-          // 1. സ്വാഗത സ്ക്രീൻ മറയ്ക്കുന്നു
-          const motScreen = document.getElementById('motivationScreen');
-          if (motScreen) motScreen.classList.add('hidden');
-
-          // 2. പരീക്ഷാ സ്ക്രീൻ പ്രദർശിപ്പിക്കുന്നു
-          const qScreen = document.getElementById('quizScreen');
-          if (qScreen) {
-            qScreen.classList.remove('hidden');
-            qScreen.classList.add('flex');
-          }
-
-          // 3. ചോദ്യങ്ങളും ടൈമറും സ്റ്റാർട്ട് ചെയ്യുന്നു
-          buildPalette();
-          renderQuestion(0);
-          startTimer();
-        }
-      }, 1000);
     }
   </script>
 </body>
