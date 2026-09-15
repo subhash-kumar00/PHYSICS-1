@@ -66,7 +66,7 @@
 
       <div class="pt-2">
         <span class="text-xs font-semibold text-slate-400 block mb-2 uppercase tracking-wide">പരീക്ഷ ആരംഭിക്കുന്നു...</span>
-        <div id="countdownNumber" class="text-6xl font-black text-cyan-400 font-mono animate-count">1</div>
+        <div id="countdownNumber" class="text-6xl font-black text-cyan-400 font-mono animate-count">3</div>
       </div>
     </div>
 
@@ -736,6 +736,38 @@
       const skipped = document.getElementById('skipCount').innerText;
 
       window.location.href = `${homePortalUrl}?completed=true&title=${encodeURIComponent(examTitle)}&score=${score}&correct=${correct}&wrong=${wrong}&skipped=${skipped}`;
+    }
+    function startCountdownAndStartExam() {
+      let count = 3;
+      const countElem = document.getElementById('countdownNumber');
+      if (countElem) countElem.innerText = count;
+
+      const countdownTimer = setInterval(() => {
+        count--;
+        if (countElem) countElem.innerText = count;
+
+        if (count > 0) {
+          // കൗണ്ട് തുടരുന്നു
+        } else {
+          clearInterval(countdownTimer);
+
+          // 1. സ്വാഗത സ്ക്രീൻ മറയ്ക്കുന്നു
+          const motScreen = document.getElementById('motivationScreen');
+          if (motScreen) motScreen.classList.add('hidden');
+
+          // 2. പരീക്ഷാ സ്ക്രീൻ പ്രദർശിപ്പിക്കുന്നു
+          const qScreen = document.getElementById('quizScreen');
+          if (qScreen) {
+            qScreen.classList.remove('hidden');
+            qScreen.classList.add('flex');
+          }
+
+          // 3. ചോദ്യങ്ങളും ടൈമറും സ്റ്റാർട്ട് ചെയ്യുന്നു
+          buildPalette();
+          renderQuestion(0);
+          startTimer();
+        }
+      }, 1000);
     }
   </script>
 </body>
