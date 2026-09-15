@@ -654,6 +654,24 @@
     document.getElementById('closeLeaderboardBtn2').onclick = () => {
       document.getElementById('leaderboardModal').classList.add('hidden');
     };
+    // ഹോം പേജിൽ നിന്ന് വരുന്ന പേരും നമ്പറും സ്വയം തിരിച്ചറിഞ്ഞ് ലോഗിൻ ഒഴിവാക്കാൻ:
+    window.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const passedName = urlParams.get('name');
+      const passedPhone = urlParams.get('phone');
+
+      if (passedName && passedPhone) {
+        currentUser = {
+          name: decodeURIComponent(passedName),
+          phone: decodeURIComponent(passedPhone)
+        };
+        document.getElementById('displayUser').innerText = `${currentUser.name} (+91 ${currentUser.phone})`;
+        document.getElementById('userInfoHeader').classList.remove('hidden');
+
+        // ലോഗിൻ സ്ക്രീൻ ഒഴിവാക്കി നേരിട്ട് പരീക്ഷ തുടങ്ങുന്നു
+        triggerMotivationAndStart();
+      }
+    });
   </script>
 </body>
 </html>
