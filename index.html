@@ -3,11 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ഫിസിക്സ് സെറ്റ് 1 - മോഡൽ എക്സാം</title>
-  <!-- Tailwind CSS & Google Fonts -->
+  <title>രസതന്ത്രം - മോഡൽ എക്സാം</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Noto+Sans+Malayalam:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <!-- html2pdf.js for Client-side Scorecard PDF Generation -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <style>
     body { font-family: 'Noto Sans Malayalam', 'Manrope', sans-serif; }
@@ -15,287 +13,263 @@
     .custom-scroll::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
   </style>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col justify-between">
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col justify-between select-none">
 
   <!-- Header -->
-  <header class="bg-slate-800/95 backdrop-blur border-b border-slate-700 px-6 py-4 flex items-center justify-between sticky top-0 z-50">
+  <header class="bg-slate-800/95 backdrop-blur border-b border-slate-700 px-4 sm:px-6 py-3 flex items-center justify-between sticky top-0 z-50">
     <div class="flex items-center space-x-3">
-      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center font-black text-xl shadow-lg">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-violet-500 to-fuchsia-600 flex items-center justify-center font-black text-xl shadow-lg text-white">
         PSC
       </div>
       <div>
-        <h1 class="font-bold text-lg text-cyan-400 leading-tight">ഫിസിക്സ് (Physics) - സെറ്റ് 1</h1>
-        <p class="text-xs text-slate-400">Special Notes by Subhash Kumar | 50 ചോദ്യങ്ങൾ (50 മിനിറ്റ് മോഡൽ എക്സാം)</p>
+        <h1 id="headerExamTitle" class="font-bold text-base sm:text-lg text-violet-400 leading-tight">രസതന്ത്രം (Chemistry Part 1)</h1>
+        <p class="text-xs text-slate-400">Special Notes by Subhash Kumar | 50 ചോദ്യങ്ങൾ (50 മിനിറ്റ്)</p>
       </div>
     </div>
-    <div id="userInfoHeader" class="hidden text-right">
-      <span id="displayUser" class="text-sm font-semibold text-slate-200"></span>
-      <p class="text-xs text-emerald-400 font-mono">+1.00 / -0.33 Mark Scheme</p>
+    <div class="text-right">
+      <span id="displayUser" class="text-xs sm:text-sm font-semibold text-slate-200">പരീക്ഷാർത്ഥി</span>
+      <p class="text-[10px] text-emerald-400 font-mono">+1.00 / -0.33 Mark</p>
     </div>
   </header>
 
   <!-- Main Container -->
-  <main class="flex-1 flex flex-col items-center justify-center p-4 sm:p-6 w-full max-w-6xl mx-auto">
+  <main class="flex-1 flex flex-col items-center justify-center p-3 sm:p-6 w-full max-w-5xl mx-auto">
     
-    <!-- Step 1: Model Exam Registration Card -->
-    <div id="loginCard" class="w-full max-w-md bg-slate-800 border border-slate-700 rounded-2xl p-8 shadow-2xl">
-      <div class="text-center mb-6">
-        <span class="inline-block p-3 rounded-2xl bg-cyan-500/10 text-cyan-400 mb-2">
-          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-        </span>
-        <h2 class="text-2xl font-bold text-white">മോഡൽ എക്സാം</h2>
-        <p class="text-sm text-slate-400 mt-1">മൊബൈൽ നമ്പർ നൽകി പരീക്ഷ ആരംഭിക്കുക. ആദ്യ ശ്രമത്തിലെ മാർക്ക് മാത്രമാണ് റാങ്ക് ലിസ്റ്റിൽ ഉൾപ്പെടുത്തൂ.</p>
-      </div>
-
-      <form id="loginForm" class="space-y-4">
-        <div>
-          <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">പൂർണ്ണമായ പേര്</label>
-          <input type="text" id="candName" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-cyan-500 transition" placeholder="ഉദാ: സുഭാഷ് കുമാർ">
-        </div>
-        <div>
-          <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">മൊബൈൽ നമ്പർ (10 അക്കം)</label>
-          <input type="tel" id="candPhone" pattern="[0-9]{10}" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-cyan-500 transition font-mono tracking-wider" placeholder="10 അക്ക മൊബൈൽ നമ്പർ">
-        </div>
-
-        <div class="bg-slate-900/70 p-4 rounded-xl border border-slate-700 text-xs space-y-1 text-slate-300">
-          <p class="font-bold text-cyan-400">പരീക്ഷാ നിർദ്ദേശങ്ങൾ:</p>
-          <p class="text-amber-300 font-semibold">• അനുവദിച്ച സമയം: 50 മിനിറ്റ് (Auto Submit)</p>
-          <p>• ശരിയുത്തരം: +1 മാർക്ക് | തെറ്റായ ഉത്തരം: -0.33 മാർക്ക്</p>
-          <p>• ഉത്തരം നൽകാത്തവയ്ക്ക് (Skip) മാർക്ക് കുറയ്ക്കില്ല</p>
-          <p class="text-rose-400 font-semibold">• കുറഞ്ഞത് 15 മാർക്ക് നേടിയാൽ മാത്രമേ ഒറിജിനൽ PDF ലഭിക്കൂ</p>
-        </div>
-
-        <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-slate-950 font-bold rounded-xl transition transform active:scale-95 shadow-lg shadow-cyan-500/20">
-          പരീക്ഷ ആരംഭിക്കുക
-        </button>
-      </form>
-
-      <div class="mt-5 text-center">
-        <button id="viewRankBtn" type="button" class="text-xs text-slate-400 hover:text-cyan-400 underline">നിലവിലെ ലൈവ് റാങ്ക് ലിസ്റ്റ് കാണുക</button>
-      </div>
-    </div>
-
-    <!-- Step 2: Quiz Question Screen -->
-    <div id="quizScreen" class="w-full hidden flex-col space-y-4">
-      <div class="bg-slate-800 border border-slate-700 rounded-xl p-4 flex flex-wrap items-center justify-between gap-4 shadow-md">
+    <!-- Quiz Question Screen -->
+    <div id="quizScreen" class="w-full flex flex-col space-y-4">
+      <div class="bg-slate-800 border border-slate-700 rounded-xl p-3 sm:p-4 flex flex-wrap items-center justify-between gap-3 shadow-md">
         <div class="flex items-center space-x-3">
-          <span class="px-3 py-1 bg-cyan-500/20 text-cyan-300 font-bold rounded-lg text-sm" id="questionBadge">ചോദ്യം 1 / 50</span>
+          <span class="px-3 py-1 bg-violet-500/20 text-violet-300 font-bold rounded-lg text-xs sm:text-sm" id="questionBadge">ചോദ്യം 1 / 50</span>
           <span class="text-xs text-slate-400" id="answeredCountTxt">പൂർത്തിയാക്കിയത്: 0/50</span>
         </div>
 
-        <!-- 50 Minute Exam Timer Badge -->
         <div class="flex items-center space-x-2 bg-slate-900/90 border border-slate-700 px-3.5 py-1 rounded-xl shadow-inner">
-          <svg class="w-4 h-4 text-cyan-400 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          <svg class="w-4 h-4 text-violet-400 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
           <span class="text-xs font-semibold text-slate-400">സമയം:</span>
-          <span id="examTimer" class="font-mono text-sm font-black text-cyan-400">50:00</span>
+          <span id="examTimer" class="font-mono text-sm font-black text-violet-400">50:00</span>
         </div>
 
-        <button id="finishMidBtn" class="px-3.5 py-1.5 bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/30 text-xs font-semibold rounded-lg transition">
-          പരീക്ഷ അവസാനിപ്പിക്കുക (Finish Exam)
+        <button type="button" id="finishMidBtn" class="px-3.5 py-1.5 bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/30 text-xs font-semibold rounded-lg transition">
+          ഫിനിഷ് ചെയ്യുക
         </button>
       </div>
 
-      <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 sm:p-8 shadow-2xl">
+      <div class="bg-slate-800 border border-slate-700 rounded-2xl p-5 sm:p-8 shadow-2xl relative">
         <div class="mb-6">
-          <h2 id="qText" class="text-lg sm:text-xl font-semibold leading-relaxed text-slate-100 whitespace-pre-line"></h2>
+          <h2 id="qText" class="text-base sm:text-lg font-semibold leading-relaxed text-slate-100 whitespace-pre-line">ചോദ്യം ലോഡ് ആകുന്നു...</h2>
         </div>
 
         <div id="optionsContainer" class="space-y-3 mb-8"></div>
 
         <div class="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-slate-700">
-          <button id="prevBtn" class="px-5 py-2.5 bg-slate-700 hover:bg-slate-600 text-slate-200 text-sm font-semibold rounded-xl transition disabled:opacity-40">
+          <button type="button" id="prevBtn" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs sm:text-sm font-semibold rounded-xl transition disabled:opacity-40">
             ‹ Previous
           </button>
           <div class="flex items-center space-x-2">
-            <button id="skipBtn" class="px-4 py-2.5 bg-slate-700/50 hover:bg-slate-700 text-slate-300 text-sm rounded-xl border border-slate-600 transition">
-              Skip Question
+            <button type="button" id="skipBtn" class="px-3.5 py-2 bg-slate-700/50 hover:bg-slate-700 text-slate-300 text-xs sm:text-sm rounded-xl border border-slate-600 transition">
+              Skip
             </button>
-            <button id="nextBtn" class="px-6 py-2.5 bg-cyan-500 hover:bg-cyan-600 text-slate-950 font-bold text-sm rounded-xl transition transform active:scale-95 shadow-md">
+            <button type="button" id="nextBtn" class="px-5 py-2 bg-violet-500 hover:bg-violet-600 text-white font-bold text-xs sm:text-sm rounded-xl transition transform active:scale-95 shadow-md">
               Next ›
             </button>
           </div>
         </div>
       </div>
 
+      <!-- Question Number Palette -->
       <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-3">
         <p class="text-xs font-semibold text-slate-400 mb-2">ചോദ്യങ്ങളിലേക്ക് നേരിട്ട് പോകാൻ ക്ലിക്ക് ചെയ്യുക:</p>
         <div id="paletteContainer" class="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto custom-scroll pr-1"></div>
       </div>
     </div>
 
-    <!-- Step 3: Result, Explanations & Downloads -->
+    <!-- Step 3: Result Screen & Interactive Reviews -->
     <div id="resultScreen" class="w-full hidden space-y-6">
-      
-      <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 sm:p-8 shadow-2xl text-center">
-        <h2 class="text-2xl sm:text-3xl font-black text-cyan-400 mb-1">പരീക്ഷാ ഫലം (Exam Result)</h2>
-        <p class="text-sm text-slate-400 mb-6" id="resultCandidateInfo"></p>
+      <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 sm:p-8 shadow-2xl text-center space-y-5">
+        
+        <div class="flex justify-end">
+          <button type="button" onclick="returnToHomeWithData()" class="px-4 py-2 bg-violet-500 hover:bg-violet-400 text-slate-950 font-black rounded-xl text-xs transition shadow flex items-center space-x-1.5">
+            <span>🏠</span>
+            <span>ഹോം പേജിലേക്ക് മടങ്ങുക (Save Result)</span>
+          </button>
+        </div>
 
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl mx-auto mb-6">
-          <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-700">
+        <div>
+          <h2 class="text-2xl sm:text-3xl font-black text-violet-400 mb-1">പരീക്ഷാ ഫലം (Exam Result)</h2>
+          <p class="text-sm text-slate-400 mb-1" id="resultCandidateInfo"></p>
+          <span class="inline-block text-[11px] text-emerald-400 bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-800">
+            ✓ ഫലം പ്രൊഫൈൽ ഹിസ്റ്ററിയിൽ രേഖപ്പെടുത്തിയിട്ടുണ്ട്
+          </span>
+        </div>
+
+        <!-- Dynamic Motivation Badge -->
+        <div id="scoreMotivationBadge" class="max-w-xl mx-auto p-4 rounded-2xl border text-sm leading-relaxed transition shadow-inner"></div>
+
+        <!-- Clickable Score Cards -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-2xl mx-auto">
+          <div class="bg-slate-900/80 p-3.5 rounded-xl border border-slate-700">
             <span class="text-xs text-slate-400 block font-semibold uppercase">നെറ്റ് സ്കോർ</span>
-            <span id="finalScore" class="text-3xl font-black text-cyan-400 font-mono">0.00</span>
+            <span id="finalScore" class="text-2xl sm:text-3xl font-black text-violet-400 font-mono">0.00</span>
             <span class="text-[10px] text-slate-500 block">50 ൽ</span>
           </div>
-          <div class="bg-slate-900/80 p-4 rounded-xl border border-emerald-900/50">
-            <span class="text-xs text-emerald-400 block font-semibold uppercase">ശരി (+1)</span>
-            <span id="correctCount" class="text-2xl font-bold text-emerald-400 font-mono">0</span>
+
+          <div id="filterCorrectCard" class="bg-slate-900/80 p-3.5 rounded-xl border border-emerald-800/80 hover:bg-emerald-950/40 cursor-pointer transition shadow hover:border-emerald-500 group" title="ശരിയായ ചോദ്യങ്ങൾ കാണാൻ ക്ലിക്ക് ചെയ്യുക">
+            <span class="text-xs text-emerald-400 block font-semibold uppercase group-hover:underline">ശരി (+1) 👆</span>
+            <span id="correctCount" class="text-xl sm:text-2xl font-bold text-emerald-400 font-mono">0</span>
+            <span class="text-[10px] text-emerald-400/60 block">കാണാൻ ക്ലിക്ക് ചെയ്യുക</span>
           </div>
-          <div class="bg-slate-900/80 p-4 rounded-xl border border-rose-900/50">
-            <span class="text-xs text-rose-400 block font-semibold uppercase">തെറ്റ് (-0.33)</span>
-            <span id="wrongCount" class="text-2xl font-bold text-rose-400 font-mono">0</span>
+
+          <div id="filterWrongCard" class="bg-slate-900/80 p-3.5 rounded-xl border border-rose-800/80 hover:bg-rose-950/40 cursor-pointer transition shadow hover:border-rose-500 group" title="തെറ്റിയ ചോദ്യങ്ങൾ കാണാൻ ക്ലിക്ക് ചെയ്യുക">
+            <span class="text-xs text-rose-400 block font-semibold uppercase group-hover:underline">തെറ്റ് (-0.33) 👆</span>
+            <span id="wrongCount" class="text-xl sm:text-2xl font-bold text-rose-400 font-mono">0</span>
+            <span class="text-[10px] text-rose-400/60 block">കാണാൻ ക്ലിക്ക് ചെയ്യുക</span>
           </div>
-          <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-700">
-            <span class="text-xs text-slate-400 block font-semibold uppercase">Skip ചെയ്തവ</span>
-            <span id="skipCount" class="text-2xl font-bold text-slate-300 font-mono">0</span>
+
+          <div id="filterSkippedCard" class="bg-slate-900/80 p-3.5 rounded-xl border border-slate-600/80 hover:bg-slate-700/40 cursor-pointer transition shadow hover:border-slate-400 group" title="സ്കിപ്പ് ചെയ്ത ചോദ്യങ്ങൾ കാണാൻ ക്ലിക്ക് ചെയ്യുക">
+            <span class="text-xs text-slate-300 block font-semibold uppercase group-hover:underline">Skip ചെയ്തവ 👆</span>
+            <span id="skipCount" class="text-xl sm:text-2xl font-bold text-slate-300 font-mono">0</span>
+            <span class="text-[10px] text-slate-400 block">കാണാൻ ക്ലിക്ക് ചെയ്യുക</span>
           </div>
         </div>
 
-        <div id="sheetStatus" class="text-xs text-cyan-400 mb-4 animate-pulse">സ്കോർ ഗൂഗിൾ ഷീറ്റിലേക്ക് രേഖപ്പെടുത്തുന്നു...</div>
+        <div id="sheetStatus" class="text-xs text-violet-400 animate-pulse">സ്കോർ ഗൂഗിൾ ഷീറ്റിലേക്ക് രേഖപ്പെടുത്തുന്നു...</div>
 
         <!-- 15 Mark Cut-off Warning Box -->
-        <div id="pdfLockNotice" class="hidden max-w-md mx-auto mb-5 p-3.5 bg-rose-950/40 border border-rose-800/80 rounded-xl text-xs text-rose-300">
+        <div id="pdfLockNotice" class="hidden max-w-md mx-auto p-3.5 bg-rose-950/40 border border-rose-800/80 rounded-xl text-xs text-rose-300">
           ⚠️ <strong>ശ്രദ്ധിക്കുക:</strong> കുറഞ്ഞത് 15 മാർക്ക് നേടിയാൽ മാത്രമേ ഔദ്യോഗിക നോട്ടുകൾ PDF ഡൗൺലോഡ് ചെയ്യാൻ സാധിക്കൂ. നിങ്ങളുടെ നിലവിലെ സ്കോർ 15-ൽ താഴെയാണ്.
         </div>
 
-        <div class="flex flex-wrap items-center justify-center gap-3">
-          <!-- Download Button (Visible only if Score >= 15) -->
+        <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
           <a id="originalPdfDownloadLink" href="#" target="_blank" class="hidden px-5 py-2.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 text-slate-950 font-black rounded-xl text-sm transition shadow-lg flex items-center space-x-2">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path></svg>
             <span>ഔദ്യോഗിക നോട്ടുകൾ PDF ഡൗൺലോഡ് ചെയ്യുക 📥</span>
           </a>
 
-          <button id="downloadPdfBtn" class="px-5 py-2.5 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-xl text-sm transition shadow-lg flex items-center space-x-2">
+          <button type="button" id="downloadPdfBtn" class="px-5 py-2.5 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-xl text-sm transition shadow-lg flex items-center space-x-2">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
             <span>സ്കോർകാർഡ് PDF</span>
           </button>
 
-          <button id="showLeaderboardBtn" class="px-5 py-2.5 bg-cyan-500 hover:bg-cyan-600 text-slate-950 font-bold rounded-xl text-sm transition shadow-lg">
-            ലൈവ് റാങ്ക് ലിസ്റ്റ് കാണുക
+          <button type="button" onclick="returnToHomeWithData()" class="px-5 py-2.5 bg-slate-700 hover:bg-slate-600 text-white font-bold rounded-xl text-sm transition flex items-center space-x-1.5">
+            <span>🏠</span>
+            <span>ഹോം പോർട്ടൽ</span>
           </button>
         </div>
       </div>
 
-      <!-- Printable Solutions Area -->
+      <!-- Filtered Question Review Area -->
+      <div id="filterReviewArea" class="hidden bg-slate-800 border-2 border-violet-500/50 rounded-2xl p-6 sm:p-8 shadow-2xl space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-700 pb-3">
+          <h3 id="filterReviewTitle" class="text-lg font-bold text-white"></h3>
+          <button type="button" id="closeFilterReviewBtn" class="text-xs bg-slate-700 hover:bg-slate-600 px-3 py-1.5 rounded-lg text-white font-semibold">ക്ലോസ് ചെയ്യുക ✕</button>
+        </div>
+        <div id="filterReviewList" class="space-y-4 max-h-[60vh] overflow-y-auto custom-scroll pr-1"></div>
+      </div>
+
+      <!-- Permanent Solutions & Explanations Area at bottom -->
       <div id="pdfExportWrapper" class="bg-slate-800 border border-slate-700 rounded-2xl p-6 sm:p-8 shadow-2xl">
         <div class="border-b border-slate-700 pb-4 mb-6">
-          <h3 class="text-xl font-bold text-cyan-400">ഫിസിക്സ് (Physics) സെറ്റ് 1 - സമഗ്ര ഉത്തര സൂചിക</h3>
+          <h3 class="text-xl font-bold text-violet-400" id="solutionsTitleDisplay">രസതന്ത്രം (Part 1) - സമഗ്ര ഉത്തര സൂചിക</h3>
           <p class="text-xs text-slate-400 mt-1" id="pdfReportCandidateSubheader">പരീക്ഷാർത്ഥി വിവരങ്ങൾ</p>
         </div>
         <div id="solutionsContainer" class="space-y-6"></div>
       </div>
     </div>
 
-    <!-- Leaderboard Modal -->
-    <div id="leaderboardModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-      <div class="bg-slate-800 border border-slate-700 rounded-2xl max-w-xl w-full p-6 shadow-2xl flex flex-col max-h-[85vh]">
-        <div class="flex items-center justify-between border-b border-slate-700 pb-4 mb-4">
-          <div>
-            <h3 class="text-xl font-bold text-cyan-400">ലൈവ് റാങ്ക് ലിസ്റ്റ് (Google Sheet)</h3>
-            <p class="text-xs text-slate-400">ആദ്യ ശ്രമത്തിലെ സ്കോർ അടിസ്ഥാനമാക്കി ക്രമീകരിച്ചത്</p>
-          </div>
-          <button id="closeLeaderboardBtn" class="text-slate-400 hover:text-white text-2xl font-bold">&times;</button>
-        </div>
-        <div id="leaderboardLoading" class="py-10 text-center text-sm text-slate-400">ഗൂഗിൾ ഷീറ്റിൽ നിന്നും റാങ്ക് ലിസ്റ്റ് ശേഖരിക്കുന്നു...</div>
-        <div class="flex-1 overflow-y-auto custom-scroll pr-1 hidden" id="leaderboardTableWrapper">
-          <table class="w-full text-left text-sm">
-            <thead class="text-xs uppercase bg-slate-900/80 text-slate-400 sticky top-0">
-              <tr>
-                <th class="py-2.5 px-3">റാങ്ക്</th>
-                <th class="py-2.5 px-3">പേര്</th>
-                <th class="py-2.5 px-3">മൊബൈൽ</th>
-                <th class="py-2.5 px-3 text-right">മാർക്ക്</th>
-              </tr>
-            </thead>
-            <tbody id="leaderboardBody" class="divide-y divide-slate-700"></tbody>
-          </table>
-        </div>
-        <div class="pt-4 border-t border-slate-700 mt-4 text-center">
-          <button id="closeLeaderboardBtn2" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg text-xs font-semibold text-white">
-            ക്ലോസ് ചെയ്യുക
-          </button>
-        </div>
-      </div>
-    </div>
-
   </main>
 
   <footer class="text-center py-4 text-xs text-slate-500 border-t border-slate-800">
-    ഫിസിക്സ് (Physics): ചലനം, ബലം, ഗുരുത്വാകർഷണം, ചലന നിയമങ്ങൾ | Special Notes by Subhash Kumar
+    രസതന്ത്രം (Chemistry Part 1) | Special Notes by Subhash Kumar
   </footer>
 
   <script>
-    // =========================================================================
-    // ⚠️ 1. ഈ 3 വേരിയബിളുകൾ മാത്രം നിങ്ങളുടെ വിവരങ്ങൾ വെച്ച് മാറ്റുക:
-    // =========================================================================
-    let GOOGLE_SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzz16_cHXqIxioiMN1INEK6z_29Q7nnroM02tNgHapEx3ng8ngIgGmXOMXO3icNydE/exec"; // നിങ്ങളുടെ Apps Script Web App URL
-    const QUIZ_SHEET_NAME = "Physics_Set1"; // നിങ്ങളുടെ ഗൂഗിൾ ഷീറ്റിൽ ഈ പേജിലേക്ക് (Tab) ഡാറ്റ തനിയെ പോകും
-    let ORIGINAL_PDF_URL = "https://drive.google.com/file/d/1TBwJzSOe70DR5r9h6S5yFUxvL2bZMvye/view?usp=sharing"; // ചോദ്യങ്ങളുടെ PDF ഡ്രൈവ് ലിങ്ക്
+    let GOOGLE_SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzhj0d9E7_wRprcbFkVhgz3WiOIZ_8xWXpnuWXq1PxD2RU-mxtFnY6G6bNl6Cn0ODt29w/exec";
+    let ORIGINAL_PDF_URL = "https://drive.google.com/file/d/1zK51trXbk98GT3nt45Ja3AC1_XEd1RTX/view?usp=sharing";
+    let examTitle = "രസതന്ത്രം (Chemistry Part 1)";
 
-    // 50 Questions directly from the Physics Set 1 PDF
     const questionsData = [
-      { q: "ഒരു വസ്തുവിന്റെ പ്രവേഗത്തിൽ ഉണ്ടാകുന്ന മാറ്റത്തിന്റെ നിരക്ക് (Rate of change of velocity) ഏത് ഭൗതിക അളവാണ്?", options: ["വേഗത", "ത്വരണം", "സംവേഗം", "സ്ഥാനാന്തരം"], ans: 1, exp: "സമയത്തിനനുസരിച്ച് പ്രവേഗത്തിലുണ്ടാകുന്ന മാറ്റത്തിന്റെ നിരക്കാണ് ത്വരണം. ഇതിന്റെ SI യൂണിറ്റ് മീറ്റർ / സെക്കൻഡ്² (m/s²) ആണ്[cite: 11]." },
-      { q: "ഒരു ബാഹ്യബലം പ്രവർത്തിക്കാത്തിടത്തോളം ഏതൊരു വസ്തുവും അതിന്റെ നിശ്ചലാവസ്ഥയിലോ നേർരേഖയിലുള്ള സമാന ചലനാവസ്ഥയിലോ തുടരുന്നു എന്ന് വ്യക്തമാക്കുന്ന ന്യൂട്ടന്റെ ചലനനിയമം ഏത്?", options: ["ഒന്നാം ചലനനിയമം", "രണ്ടാം ചലനനിയമം", "മൂന്നാം ചലനനിയമം", "ഗുരുത്വാകർഷണ നിയമം"], ans: 0, exp: "ജഡത്വ നിയമം (Law of Inertia) എന്നും അറിയപ്പെടുന്ന ഒന്നാം ചലനനിയമമാണ് ബലത്തിന്റെ നിർവ്വചനം നൽകുന്നത്[cite: 11]." },
-      { q: "ബലത്തിന്റെ അളവ് കണ്ടെത്താനുള്ള സൂത്രവാക്യമായ F = ma ലഭ്യമാകുന്നത് ന്യൂട്ടന്റെ ഏത് ചലനനിയമത്തിൽ നിന്നാണ്?", options: ["ഒന്നാം ചലനനിയമം", "രണ്ടാം ചലനനിയമം", "മൂന്നാം ചലനനിയമം", "കെപ്ലറുടെ നിയമം"], ans: 1, exp: "ഒരു വസ്തുവിന്റെ സംവേഗ മാറ്റത്തിന്റെ നിരക്ക് അതിന്മേൽ പ്രയോഗിക്കുന്ന ബാഹ്യബലത്തിന് നേർ അനുപാതത്തിലായിരിക്കും എന്ന് രണ്ടാം ചലനനിയമം പ്രസ്താവിക്കുന്നു (ബലം = മാസ്സ് × ത്വരണം)[cite: 11]." },
-      { q: "റോക്കറ്റുകളുടെ വിക്ഷേപണ തത്ത്വം (Rocket Propulsion) ന്യൂട്ടന്റെ ഏത് ചലനനിയമവുമായാണ് നേരിട്ട് ബന്ധപ്പെട്ടിരിക്കുന്നത്?", options: ["ഒന്നാം ചലനനിയമം", "രണ്ടാം ചലനനിയമം", "മൂന്നാം ചലനനിയമം", "പാസ്കൽ നിയമം"], ans: 2, exp: "'ഏതൊരു പ്രവർത്തനത്തിനും തുല്യവും വിപരീതവുമായ ഒരു പ്രതിപ്രവർത്തനം ഉണ്ടായിരിക്കും' എന്ന മൂന്നാം ചലനനിയമവും സംവേഗ സംരക്ഷണ നിയമവുമാണ് റോക്കറ്റ് പ്രവർത്തന തത്വം[cite: 11]." },
-      { q: "ഭൂമിയിൽ ഒരു വസ്തുവിന്മേൽ അനുഭവപ്പെടുന്ന ഗുരുത്വാകർഷണ ത്വരണം (g) ഏറ്റവും കൂടുതൽ അനുഭവപ്പെടുന്നത് എവിടെയാണ്?", options: ["ഭൂമധ്യരേഖയിൽ", "ധ്രുവങ്ങളിൽ", "ഭൂമിയുടെ കേന്ദ്രത്തിൽ", "അന്തരീക്ഷത്തിന്റെ മുകൾത്തട്ടിൽ"], ans: 1, exp: "ഭൂമിയുടെ ധ്രുവീയ ആരം മധ്യരേഖാ ആരത്തേക്കാൾ കുറവായതിനാൽ ധ്രുവങ്ങളിൽ g യുടെ മൂല്യം ഏറ്റവും കൂടുതലാണ് (9.83 m/s²)[cite: 11]." },
-      { q: "ഭൂമിയുടെ കേന്ദ്രത്തിൽ ഒരു വസ്തുവിന്റെ ഭാരം (Weight) എത്രയായിരിക്കും?", options: ["പരമാവധി", "പൂജ്യം", "ഉപരിതലത്തിലെ പകുതി", "അനന്തം"], ans: 1, exp: "ഭൂമിയുടെ കേന്ദ്രത്തിൽ ഗുരുത്വാകർഷണ ത്വരണം പൂജ്യമായതിനാൽ (g = 0) വസ്തുവിന്റെ ഭാരം W = mg = 0 ആയിരിക്കും[cite: 11]." },
-      { q: "ഒരു വസ്തുവിന് ഭൂമിയുടെ ഗുരുത്വാകർഷണ മണ്ഡലത്തിൽ നിന്നും എന്നെന്നേക്കുമായി പുറത്തു കടക്കാൻ ആവശ്യമായ പലായന പ്രവേഗം (Escape Velocity) എത്രയാണ്?", options: ["9.8 കിലോമീറ്റർ / സെക്കൻഡ് (km/s)", "11.2 കിലോമീറ്റർ / സെക്കൻഡ് (km/s)", "8 കിലോമീറ്റർ / സെക്കൻഡ് (km/s)", "2.4 കിലോമീറ്റർ / സെക്കൻഡ് (km/s)"], ans: 1, exp: "ഭൂമിയുടെ ഉപരിതലത്തിൽ നിന്നുള്ള പലായന പ്രവേഗം ഏകദേശം 11.2 km/s ആണ് (ചന്ദ്രനിലിത് 2.4 km/s ആണ്)[cite: 11]." },
-      { q: "സാർവ്വത്രിക ഗുരുത്വാകർഷണ സ്ഥിരാങ്കമായ 'G' യുടെ മൂല്യം പരീക്ഷണങ്ങളിലൂടെ ആദ്യമായി നിർണ്ണയിച്ച ശാസ്ത്രജ്ഞൻ ആര്?", options: ["ഐസക് ന്യൂട്ടൺ", "ഹെൻറി കാവൻഡിഷ്", "ഗലീലിയോ ഗലീലി", "ആൽബർട്ട് ഐൻസ്റ്റീൻ"], ans: 1, exp: "1798-ൽ ടോർഷൻ ബാലൻസ് പരീക്ഷണത്തിലൂടെ ഹെൻറി കാവൻഡിഷ് ആണ് G = 6.674 × 10^-11 Nm²/kg² എന്ന മൂല്യം കണ്ടെത്തിയത്[cite: 11]." },
-      { q: "വൃത്താകാര പാതയിലൂടെ സഞ്ചരിക്കുന്ന ഒരു വസ്തുവിൽ കേന്ദ്രത്തിലേക്ക് അനുഭവപ്പെടുന്ന ബലം ഏത് പേരിൽ അറിയപ്പെടുന്നു?", options: ["അപകേന്ദ്രബലം", "അഭികേന്ദ്രബലം", "ഘർഷണബലം", "കേവലബലം"], ans: 1, exp: "വൃത്താകാര ചലനത്തിലുള്ള വസ്തുവിനെ പാതയിൽ നിലനിർത്താൻ കേന്ദ്രത്തിലേക്ക് പ്രയോഗിക്കപ്പെടുന്ന ബലമാണ് അഭികേന്ദ്രബലം (Centripetal Force)[cite: 11]." },
-      { q: "ക്രീം സെപ്പറേറ്റർ, വാഷിംഗ് മെഷീനിലെ ഡ്രയർ എന്നിവ പ്രവർത്തിക്കുന്നത് ഏത് ബലത്തെ അടിസ്ഥാനമാക്കിയാണ്?", options: ["അഭികേന്ദ്രബലം", "അപകേന്ദ്രബലം", "കാന്തികബലം", "തരംഗബലം"], ans: 1, exp: "കറങ്ങുന്ന ഫ്രെയിമിൽ പുറത്തേക്ക് അനുഭവപ്പെടുന്ന വ്യാജബലമായ അപകേന്ദ്രബലമാണ് (Centrifugal Force) സാന്ദ്രത കുറഞ്ഞ ക്രീമിനെ വേർതിരിക്കാനും വസ്ത്രങ്ങൾ ഡ്രൈ ചെയ്യാനും സഹായിക്കുന്നത്[cite: 11]." },
-      { q: "ഒരു ക്രിക്കറ്റ് ഫീൽഡർ പന്ത് പിടിക്കുമ്പോൾ കൈകൾ പിന്നോട്ട് വലിക്കുന്നത് ഏത് ഭൗതിക പ്രതിഭാസത്തിന്റെ ആഘാതം കുറയ്ക്കാനാണ്?", options: ["ത്വരണം", "ആവേഗം", "വിസ്കോസിറ്റി", "സാന്ദ്രത"], ans: 1, exp: "കൈകൾ പിന്നോട്ട് ചലിപ്പിച്ച് സമയം വർദ്ധിപ്പിക്കുന്നതിലൂടെ പ്രവേഗമാറ്റ നിരക്ക് കുറയ്ക്കുകയും പന്ത് കൈകളിൽ ഏൽപ്പിക്കുന്ന ആഘാതബലം കുറയ്ക്കുകയും ചെയ്യുന്നു[cite: 11]." },
-      { q: "ഒരു വസ്തുവിന്റെ ദ്രവ്യമാനവും (Mass) പ്രവേഗവും (Velocity) തമ്മിലുള്ള ഗുണനഫലം ഏത് പേരിൽ അറിയപ്പെടുന്നു?", options: ["ആവേഗം (Momentum)", "ബലം", "പ്രവൃത്തി", "ഊർജ്ജം"], ans: 0, exp: "P = mv എന്ന സമവാക്യം പ്രതിനിധാനം ചെയ്യുന്നത് സംവേഗത്തെയാണ് (Momentum). ഇതിന്റെ SI യൂണിറ്റ് kg m/s ആണ്[cite: 11]." },
-      { q: "ഒരു കപ്പൽ കടലിലൂടെ സഞ്ചരിക്കുമ്പോൾ സമ്പർക്കമുഖങ്ങളിൽ ചലനത്തെ പ്രതിരോധിക്കുന്ന ഘർഷണബലം കുറയ്ക്കാൻ കപ്പലുകളുടെ മുൻഭാഗം കൂർത്തതാക്കുന്നതിന് പറയുന്ന പേരെന്ത്?", options: ["ലൂബ്രിക്കേഷൻ", "സ്ട്രീംലൈനിംഗ്", "കാവിറ്റേഷൻ", "ഫ്ലോട്ട് അറേഞ്ച്മെന്റ്"], ans: 1, exp: "വായുവിലൂടെയും ജലത്തിലൂടെയും സഞ്ചരിക്കുന്ന വാഹനങ്ങളുടെ ദ്രവഘർഷണം (Drag) കുറയ്ക്കാനായി പ്രത്യേക ആകൃതി നൽകുന്നതിനെയാണ് സ്ട്രീംലൈനിംഗ് (Streamlining) എന്ന് വിളിക്കുന്നത്[cite: 11]." },
-      { q: "ഭൂമിയിൽ 60 കിലോഗ്രാം മാസ്സ് (Mass) ഉള്ള ഒരു വ്യക്തിക്ക് ചന്ദ്രനിൽ എത്ര മാസ്സ് ഉണ്ടായിരിക്കും?", options: ["10 കിലോഗ്രാം", "60 കിലോഗ്രാം", "360 കിലോഗ്രാം", "പൂജ്യം"], ans: 1, exp: "ഒരു വസ്തുവിലെ ദ്രവ്യത്തിന്റെ അളവായ മാസ്സ് (Mass) പ്രപഞ്ചത്തിൽ എവിടെയും മാറ്റമില്ലാതെ തുടരുന്നു (60 kg)[cite: 11]. എന്നാൽ ഭാരം ചന്ദ്രനിൽ ആറിലൊന്നായി (1/6) കുറയും[cite: 11]." },
-      { q: "ഗ്രഹങ്ങളുടെ ചലനവുമായി ബന്ധപ്പെട്ട 'തുല്യ വിസ്തീർണ്ണ നിയമം' (Law of Equal Areas) ആവിഷ്കരിച്ച ശാസ്ത്രജ്ഞൻ ആര്?", options: ["ഗലീലിയോ", "ജോഹന്നാസ് കെപ്ലർ", "ടൈക്കോ ബ്രാഹെ", "കോപ്പർനിക്കസ്"], ans: 1, exp: "ഗ്രഹങ്ങൾ ഒരു നിശ്ചിത സമയത്തിനുള്ളിൽ സൂര്യനെ ചുറ്റുമ്പോൾ തുല്യ വിസ്തീർണ്ണം അടയാളപ്പെടുത്തുന്നു എന്ന് കെപ്ലറുടെ രണ്ടാം നിയമം വ്യക്തമാക്കുന്നു[cite: 11]." },
-      { q: "ഭൂമിയുടെ ഉപരിതലത്തിൽ സ്വതന്ത്രമായി താഴേക്ക് പതിക്കുന്ന ഒരു വസ്തുവിന്റെ ത്വരണം എത്രയാണ്?", options: ["9.8 മീറ്റർ / സെക്കൻഡ് (m/s)", "9.8 മീറ്റർ / സെക്കൻഡ്² (m/s²)", "9.8 കിലോമീറ്റർ / മണിക്കൂർ (km/h)", "980 മീറ്റർ / സെക്കൻഡ്² (m/s²)"], ans: 1, exp: "വായുവിന്റെ ഘർഷണം അവഗണിച്ചാൽ ഭൂമിയുടെ ഉപരിതലത്തിൽ ഏതൊരു വസ്തുവും താഴേക്ക് വീഴുന്നത് 9.8 m/s² എന്ന ഏകീകൃത ത്വരണത്തിലാണ്[cite: 11]." },
-      { q: "ഒരു ഭ്രമണ അക്ഷത്തെ ആധാരമാക്കി കറങ്ങാൻ ഒരു വസ്തുവിൻമേൽ പ്രയോഗിക്കുന്ന ബലത്തിന്റെ തിരിവുഫലത്തെ (Turning effect of force) എന്ത് വിളിക്കുന്നു?", options: ["പ്രവൃത്തി", "ടോർക്ക്", "ത്വരണം", "സംവേഗം"], ans: 1, exp: "വാതിലുകൾ തുറക്കാനും സ്ക്രൂ തിരിക്കാനും സഹായിക്കുന്ന ബലത്തിന്റെ തിരിയുന്ന ഫലമാണ് ടോർക്ക് അഥവാ ബലഘൂർണം (Torque)[cite: 11]." },
-      { q: "ഓടിക്കൊണ്ടിരിക്കുന്ന ബസ് പെട്ടെന്ന് ബ്രേക്ക് ഇടുമ്പോൾ യാത്രക്കാർ മുന്നോട്ട് ആഞ്ഞുപോകുന്നതിന് കാരണമായ ജഡത്വം ഏത്?", options: ["നിശ്ചല ജഡത്വം", "ചലന ജഡത്വം", "ദിശാ ജഡത്വം", "ഗുരുത്വ ജഡത്വം"], ans: 1, exp: "ശരീരം ചലനാവസ്ഥയിൽ തുടർന്നുപോകാൻ ശ്രമിക്കുന്നതിനാൽ ബസ് നിൽക്കുമ്പോൾ യാത്രക്കാർ മുന്നോട്ട് ആയുന്നു (Inertia of Motion)[cite: 11]." },
-      { q: "ഒരു സാധാരണ തുലാസ് (Beam Balance) ഉപയോഗിച്ച് അളക്കുന്നത് ഒരു വസ്തുവിന്റെ ഏത് ഭൗതിക അളവാണ്?", options: ["ഭാരം", "ദ്രവ്യമാനം", "സാന്ദ്രത", "ആപേക്ഷിക ഭാരം"], ans: 1, exp: "തുലാസ് മാസ്സ് താരതമ്യം ചെയ്യുമ്പോൾ, സ്പ്രിംഗ് ബാലൻസ് വസ്തുവിന്റെ ഭാരമാണ് അളക്കുന്നത്[cite: 11]." },
-      { q: "ഒരു ലിഫ്റ്റ് കേബിൾ പൊട്ടി സ്വതന്ത്രമായി താഴേക്ക് വീഴുമ്പോൾ അതിനുള്ളിലുള്ള ഒരു വ്യക്തി അനുഭവിക്കുന്ന അവസ്ഥ ഏതാണ്?", options: ["ഇരട്ടി ഭാരം", "ഭാരമില്ലായ്മ", "സാന്ദ്രതക്കുറവ്", "അനിയന്ത്രിത ത്വരണം"], ans: 1, exp: "ലിഫ്റ്റും വ്യക്തിയും ഒരേ ഗുരുത്വാകർഷണ ത്വരണത്തിൽ (g) താഴേക്ക് പതിക്കുമ്പോൾ പ്രതികരണബലം പൂജ്യമാകുന്നു (R = 0), ഇത് ഭാരമില്ലായ്മയ്ക്ക് (Weightlessness) കാരണമാകുന്നു[cite: 11]." },
-      { q: "സ്കെയിലാർ, വെക്റ്റർ അളവുകളെക്കുറിച്ചുള്ള പ്രസ്താവനകൾ പരിശോധിക്കുക:\n1. വേഗത, ദൂരം, പിണ്ഡം എന്നിവ പരിമാണം (Magnitude) മാത്രമുള്ള സ്കെയിലാർ അളവുകളാണ്.\n2. സ്ഥാനാന്തരവും പ്രവേഗവും ദിശയില്ലാത്ത സ്കെയിലാർ അളവുകൾക്ക് ഉദാഹരണങ്ങളാണ്.\n3. ബലത്തിന് പരിമാണം മാത്രമേയുള്ളൂ, ദിശയില്ല.", options: ["1 മാത്രം ശരിയാണ്", "1, 2 ശരിയാണ്", "2, 3 ശരിയാണ്", "എല്ലാ പ്രസ്താവനകളും ശരിയാണ്"], ans: 0, exp: "2, 3 പ്രസ്താവനകൾ തെറ്റാണ്[cite: 11]. സ്ഥാനാന്തരം, പ്രവേഗം, ബലം എന്നിവ പരിമാണവും ദിശയുമുള്ള വെക്റ്റർ അളവുകളാണ്[cite: 11]. അതിനാൽ 1 മാത്രം ശരി[cite: 11]." },
-      { q: "ഘർഷണബലത്തെയും (Friction) അതിന്റെ ഉപയോഗങ്ങളെയും സംബന്ധിച്ച പ്രസ്താവനകൾ ഏവ?\n1. വസ്തുക്കളുടെ പരസ്പര സമ്പർക്കമുഖങ്ങളിലെ പരുക്കൻ സ്വഭാവമാണ് ഘർഷണത്തിന് പ്രധാന കാരണം.\n2. ഘർഷണം എപ്പോഴും ഒരു ദോഷം മാത്രമാണ്, പ്രകൃതിയിൽ മനുഷ്യർക്ക് ഇതുകൊണ്ട് യാതൊരു പ്രയോജനവുമില്ല.\n3. കാൽ നിലത്തുറച്ച് നടക്കാനും വാഹനങ്ങൾ ബ്രേക്ക് ചെയ്യാനും ഘർഷണബലം അത്യന്താപേക്ഷിതമാണ്.", options: ["1, 2 ശരിയാണ്", "1, 3 ശരിയാണ്", "2, 3 ശരിയാണ്", "എല്ലാം ശരിയാണ്"], ans: 1, exp: "രണ്ടാമത്തെ പ്രസ്താവന തെറ്റാണ്[cite: 11]. ഘർഷണം ഒരു ആവശ്യ തിന്മയാണ്; ഘർഷണമില്ലെങ്കിൽ മനുഷ്യന് നടക്കാനോ വാഹനങ്ങൾ നിർത്താനോ കഴിയില്ല[cite: 11]. 1, 3 ശരിയാണ്[cite: 11]." },
-      { q: "ന്യൂട്ടന്റെ സാർവ്വത്രിക ഗുരുത്വാകർഷണ നിയമത്തെ സംബന്ധിച്ച പ്രസ്താവനകൾ ഏവ?\n1. പ്രപഞ്ചത്തിലെ ഏതൊരു രണ്ട് വസ്തുക്കളും പരസ്പരം അവയുടെ പിണ്ഡങ്ങളുടെ ഗുണനഫലത്തിന് നേർ അനുപാതത്തിൽ ആകർഷിക്കുന്നു.\n2. അവ തമ്മിലുള്ള ആകർഷണബലം അവ തമ്മിലുള്ള ദൂരത്തിന്റെ വർഗ്ഗത്തിന് വിപരീതാനുപാതത്തിലാണ്.\n3. രണ്ട് വസ്തുക്കൾ തമ്മിലുള്ള ദൂരം ഇരട്ടിയാക്കിയാൽ അവ തമ്മിലുള്ള ആകർഷണബലം നാലിലൊന്നായി കുറയുന്നു.", options: ["1, 2 ശരിയാണ്", "2, 3 ശരിയാണ്", "1, 3 ശരിയാണ്", "1, 2, 3 പ്രസ്താവനകളും ശരിയാണ്"], ans: 3, exp: "ന്യൂട്ടന്റെ ഗുരുത്വാകർഷണ സമവാക്യമായ F = G(m1m2)/d² അനുസരിച്ച് മൂന്ന് പ്രസ്താവനകളും പൂർണ്ണമായും ശരിയാണ്[cite: 11]." },
-      { q: "മാസ്സും (Mass) ഭാരവും (Weight) തമ്മിലുള്ള വ്യത്യാസങ്ങളെക്കുറിച്ചുള്ള പ്രസ്താവനകൾ ഏവ?\n1. മാസ്സ് ഒരു വെക്റ്റർ അളവും ഭാരം ഒരു സ്കെയിലാർ അളവുമാണ്.\n2. മാസ്സ് എന്നത് ഒരു വസ്തുവിലടങ്ങിയിരിക്കുന്ന ദ്രവ്യത്തിന്റെ അളവാണ്, ഇതിന്റെ യൂണിറ്റ് കിലോഗ്രാം (kg) ആണ്.\n3. ഒരു വസ്തുവിൻമേൽ അനുഭവപ്പെടുന്ന ഗുരുത്വാകർഷണ ബലമാണ് ഭാരം, ഇതിന്റെ SI യൂണിറ്റ് ന്യൂട്ടൺ (N) ആണ്.", options: ["1, 2 ശരിയാണ്", "1, 3 ശരിയാണ്", "2, 3 ശരിയാണ്", "എല്ലാ പ്രസ്താവനകളും ശരിയാണ്"], ans: 2, exp: "ഒന്നാമത്തെ പ്രസ്താവന തെറ്റാണ്[cite: 11]. മാസ്സ് ഒരു സ്കെയിലാർ അളവും, ഭാരം ഭൂമിയുടെ കേന്ദ്രത്തിലേക്ക് ദിശയുള്ള വെക്റ്റർ അളവുമാണ്[cite: 11]. 2, 3 ശരിയാണ്[cite: 11]." },
-      { q: "സംവേഗ സംരക്ഷണ നിയമത്തെ (Law of Conservation of Momentum) സംബന്ധിച്ച പ്രസ്താവനകൾ ഏവ?\n1. ഒരു വ്യൂഹത്തിന്മേൽ ബാഹ്യബലങ്ങൾ പ്രവർത്തിക്കാതിരുന്നാൽ അതിന്റെ ആകെ സംവേഗം സ്ഥിരമായിരിക്കും.\n2. തോക്കിൽ നിന്ന് വെടിയുതിർക്കുമ്പോൾ തോക്ക് പിന്നോട്ട് ആയുന്നത് സംവേഗ സംരക്ഷണത്തിന് തെളിവാണ്.\n3. റോക്കറ്റ് വായുവിൽ സഞ്ചരിക്കുമ്പോൾ അതിന്റെ ആകെ സംവേഗം ഇല്ലാതായി മാറുന്നു.", options: ["1, 2 ശരിയാണ്", "2, 3 ശരിയാണ്", "1, 3 ശരിയാണ്", "എല്ലാ പ്രസ്താവനകളും ശരിയാണ്"], ans: 0, exp: "മൂന്നാമത്തെ പ്രസ്താവന തെറ്റാണ്[cite: 11]. റോക്കറ്റിൽ നിന്ന് പുറന്തള്ളുന്ന വാതകങ്ങളുടെ സംവേഗത്തിന് തുല്യമായി റോക്കറ്റ് മുന്നോട്ട് കുതിക്കുമ്പോൾ വ്യൂഹത്തിന്റെ സംവേഗം സംരക്ഷിക്കപ്പെടുകയാണ് ചെയ്യുന്നത്[cite: 11]. 1, 2 ശരിയാണ്[cite: 11]." },
-      { q: "ഗുരുത്വാകർഷണ ത്വരണം 'g' യുടെ വ്യതിയാനങ്ങളെക്കുറിച്ചുള്ള പ്രസ്താവനകൾ പരിശോധിക്കുക:\n1. ഭൂമിയുടെ ഉപരിതലത്തിൽ നിന്ന് മുകളിലേക്ക് പോകുംതോറും 'g' യുടെ മൂല്യം ക്രമമായി വർദ്ധിക്കുന്നു.\n2. ഭൂമിയുടെ ഉപരിതലത്തിൽ നിന്ന് ഭൂമിയുടെ ഉള്ളിലേക്ക് ആഴത്തിൽ പോകുംതോറും 'g' യുടെ മൂല്യം കുറയുന്നു.\n3. ചന്ദ്രനിലെ ഗുരുത്വാകർഷണ ത്വരണം ഭൂമിയേക്കാൾ ആറ് മടങ്ങ് കൂടുതലാണ്.", options: ["1 മാത്രം ശരിയാണ്", "2 മാത്രം ശരിയാണ്", "1, 3 ശരിയാണ്", "1, 2, 3 പ്രസ്താവനകളും ശരിയാണ്"], ans: 1, exp: "1, 3 പ്രസ്താവനകൾ തെറ്റാണ്[cite: 11]. ഉപരിതലത്തിൽ നിന്ന് മുകളിലേക്ക് പോകുമ്പോഴും 'g' കുറയുന്നു[cite: 11]. ചന്ദ്രനിലെ 'g' ഭൂമിയുടെ ആറിലൊന്നാണ് (1/6)[cite: 11]. അതിനാൽ 2 മാത്രം ശരി[cite: 11]." },
-      { q: "സ്ഥിതികോർജ്ജത്തെയും (Potential Energy) ചലനാത്മകോർജ്ജത്തെയും (Kinetic Energy) സംബന്ധിച്ച പ്രസ്താവനകൾ ഏവ?\n1. സ്ഥാന വ്യത്യാസമോ ആകൃതി വ്യത്യാസമോ മൂലം ഒരു വസ്തുവിൽ സംഭരിക്കപ്പെടുന്ന ഊർജ്ജമാണ് സ്ഥിതികോർജ്ജം (PE = mgh).\n2. ഒരു വസ്തുവിന്റെ പ്രവേഗം ഇരട്ടിയാക്കിയാൽ അതിന്റെ ചലനാത്മകോർജ്ജം മാറ്റമില്ലാതെ തുടരും.\n3. ചലനാത്മകോർജ്ജം പ്രവേഗത്തിന്റെ വർഗ്ഗത്തിന് നേർ അനുപാതത്തിലാണ് (KE = 1/2 mv²).", options: ["1, 2 ശരിയാണ്", "2, 3 ശരിയാണ്", "1, 3 ശരിയാണ്", "എല്ലാ പ്രസ്താവനകളും ശരിയാണ്"], ans: 2, exp: "രണ്ടാമത്തെ പ്രസ്താവന തെറ്റാണ്[cite: 11]. പ്രവേഗം ഇരട്ടിയാകുമ്പോൾ ചലനാത്മകോർജ്ജം നാല് മടങ്ങായി വർദ്ധിക്കുന്നു (v²)[cite: 11]. 1, 3 ശരിയാണ്[cite: 11]." },
-      { q: "പ്രവൃത്തിയുടെ (Work) ശാസ്ത്രീയ സവിശേഷതകളെക്കുറിച്ചുള്ള പ്രസ്താവനകൾ ഏവ?\n1. ഒരു വസ്തുവിൽ ബലം പ്രയോഗിക്കുകയും ബലത്തിന്റെ ദിശയിൽ വസ്തുവിന് സ്ഥാനാന്തരം ഉണ്ടാവുകയും ചെയ്യുമ്പോഴാണ് പ്രവൃത്തി നടക്കുന്നത് (W = F × s).\n2. പ്രയോഗിച്ച ബലത്തിന് ലംബമായ ദിശയിലാണ് സ്ഥാനാന്തരമെങ്കിൽ ചെയ്യപ്പെട്ട പ്രവൃത്തി പൂജ്യമായിരിക്കും.\n3. തലയിൽ വലിയ ഭാരം ചുമന്നുകൊണ്ട് നിൽക്കുന്ന ഒരു പോർട്ടർ ശാസ്ത്രീയമായി വലിയ അളവിൽ പ്രവൃത്തി ചെയ്യുന്നു.", options: ["1, 3 ശരിയാണ്", "1, 2 ശരിയാണ്", "2, 3 ശരിയാണ്", "എല്ലാ പ്രസ്താവനകളും ശരിയാണ്"], ans: 1, exp: "മൂന്നാമത്തെ പ്രസ്താവന തെറ്റാണ്[cite: 11]. ഭാരം ചുമന്ന് ഒരിടത്ത് നിൽക്കുമ്പോൾ സ്ഥാനാന്തരം പൂജ്യമായതിനാൽ ശാസ്ത്രീയമായി പ്രവൃത്തി പൂജ്യമാണ്[cite: 11]. 1, 2 ശരിയാണ്[cite: 11]." },
-      { q: "പവർ (Power), ഊർജ്ജം എന്നിവ തമ്മിലുള്ള വ്യത്യാസങ്ങളെക്കുറിച്ചുള്ള പ്രസ്താവനകൾ ഏവ?\n1. പ്രവൃത്തി ചെയ്യാനുള്ള കഴിവാണ് ഊർജ്ജം; പ്രവൃത്തി ചെയ്യുന്നതിന്റെ നിരക്കാണ് പവർ (Power = Work / Time).\n2. പവറിന്റെ SI യൂണിറ്റ് വാട്ട് (Watt അഥവാ ജൂൾ / സെക്കൻഡ്) ആണ്.\n3. ഒരു കുതിരശക്തി (Horse Power - HP) എന്നാൽ 1000 വാട്ടിന് തുല്യമാണ്.", options: ["1, 2 ശരിയാണ്", "2, 3 ശരിയാണ്", "1, 3 ശരിയാണ്", "എല്ലാ പ്രസ്താവനകളും ശരിയാണ്"], ans: 0, exp: "മൂന്നാമത്തെ പ്രസ്താവന തെറ്റാണ്[cite: 11]. ഒരു കുതിരശക്തി (1 HP) എന്നാൽ 746 വാട്ടിന് തുല്യമാണ് (1000 വാട്ടല്ല)[cite: 11]. 1, 2 ശരിയാണ്[cite: 11]." },
-      { q: "കെപ്ലറുടെ മൂന്ന് ഗ്രഹചലന നിയമങ്ങളെക്കുറിച്ചുള്ള പ്രസ്താവനകൾ പരിശോധിക്കുക:\n1. എല്ലാ ഗ്രഹങ്ങളും സൂര്യനെ ഒരു ഫോക്കസാക്കി ദീർഘവൃത്താകാര പാതയിലാണ് പരിക്രമണം ചെയ്യുന്നത് (ഒന്നാം നിയമം).\n2. ഗ്രഹത്തെയും സൂര്യനെയും ബന്ധിപ്പിക്കുന്ന രേഖ തുല്യ സമയങ്ങളിൽ തുല്യ വിസ്തീർണ്ണങ്ങൾ അടയാളപ്പെടുത്തുന്നു (രണ്ടാം നിയമം).\n3. ഒരു ഗ്രഹത്തിന്റെ പരിക്രമണ കാലത്തിന്റെ വർഗ്ഗം സൂര്യനിൽ നിന്നുള്ള ശരാശരി ദൂരത്തിന്റെ മൂന്നാം ഘാതത്തിന് തുല്യമാണ് (മൂന്നാം നിയമം).", options: ["1, 2 ശരിയാണ്", "2, 3 ശരിയാണ്", "1, 3 ശരിയാണ്", "1, 2, 3 പ്രസ്താവനകളും ശരിയാണ്"], ans: 3, exp: "കെപ്ലറുടെ ഭ്രമണപഥ നിയമം, വിസ്തീർണ്ണ നിയമം, കാലഘട്ട നിയമം (T² ∝ R³) എന്നിവയെക്കുറിച്ചുള്ള മൂന്ന് പ്രസ്താവനകളും ശരിയാണ്[cite: 11]." },
-      { q: "റോളിംഗ് ഘർഷണവും (Rolling Friction) സ്ലൈഡിംഗ് ഘർഷണവും സംബന്ധിച്ച പ്രസ്താവനകൾ ഏവ?\n1. ഒരേ വസ്തുവിന് സ്ലൈഡിംഗ് ഘർഷണത്തേക്കാൾ വളരെ കുറവാണ് റോളിംഗ് ഘർഷണം.\n2. ഘർഷണം കുറയ്ക്കാനായി മെഷീനുകളിൽ ബോൾ ബെയറിംഗുകൾ ഉപയോഗിക്കുന്നത് സ്ലൈഡിംഗ് ഘർഷണത്തെ വർദ്ധിപ്പിക്കാനാണ്.\n3. വസ്തുക്കൾ ഉരുളുമ്പോൾ സമ്പർക്ക വിസ്തീർണ്ണം കുറയുന്നതാണ് റോളിംഗ് ഘർഷണം കുറയാൻ കാരണം.", options: ["1, 2 ശരിയാണ്", "2, 3 ശരിയാണ്", "1, 3 ശരിയാണ്", "എല്ലാ പ്രസ്താവനകളും ശരിയാണ്"], ans: 2, exp: "രണ്ടാമത്തെ പ്രസ്താവന തെറ്റാണ്[cite: 11]. സ്ലൈഡിംഗ് ഘർഷണത്തെ റോളിംഗ് ഘർഷണമാക്കി മാറ്റി ഘർഷണം കുറയ്ക്കാനാണ് ബോൾ ബെയറിംഗുകൾ ഉപയോഗിക്കുന്നത്[cite: 11]. 1, 3 ശരിയാണ്[cite: 11]." },
-      { q: "പാസ്കൽ നിയമത്തെയും (Pascal's Law) ഹൈഡ്രോളിക് ഉപകരണങ്ങളെയും സംബന്ധിച്ച പ്രസ്താവനകൾ ഏവ?\n1. പാസ്കൽ നിയമം വാതകങ്ങൾക്ക് മാത്രമേ ബാധകമാകൂ, ദ്രാവകങ്ങൾക്ക് ബാധകമല്ല.\n2. അടഞ്ഞ പാത്രത്തിൽ സ്ഥിതിചെയ്യുന്ന ദ്രാവകത്തിന്റെ ഏതെങ്കിലും ഒരു ഭാഗത്ത് പ്രയോഗിക്കുന്ന മർദ്ദം എല്ലാ ദിശകളിലേക്കും തുല്യമായി വ്യാപിക്കുന്നു.\n3. ഹൈഡ്രോളിക് ലിഫ്റ്റ്, ഹൈഡ്രോളിക് ബ്രേക്ക് എന്നിവ പ്രവർത്തിക്കുന്നത് പാസ്കൽ നിയമത്തെ അടിസ്ഥാനമാക്കിയാണ്.", options: ["1, 2 ശരിയാണ്", "2, 3 ശരിയാണ്", "1, 3 ശരിയാണ്", "എല്ലാ പ്രസ്താവനകളും ശരിയാണ്"], ans: 1, exp: "ഒന്നാമത്തെ പ്രസ്താവന തെറ്റാണ്[cite: 11]. പാസ്കൽ നിയമം പ്രധാനമായും അടഞ്ഞ ദ്രാവകങ്ങളിലാണ് പ്രയോഗിക്കുന്നത്[cite: 11]. 2, 3 ശരിയാണ്[cite: 11]." },
-      { q: "ബർണോളി തത്ത്വത്തെയും (Bernoulli's Principle) ആപ്ലിക്കേഷനുകളെയും കുറിച്ചുള്ള പ്രസ്താവനകൾ ഏവ:\n1. ഒരു ദ്രവത്തിന്റെ പ്രവേഗം വർദ്ധിക്കുമ്പോൾ അവിടെ മർദ്ദം കുറയുന്നു എന്നതാണ് ബർണോളി തത്ത്വം.\n2. വിമാനങ്ങളുടെ ചിറകുകളുടെ ലിഫ്റ്റ് ഉണ്ടാകുന്നത് ആർക്കിമിഡീസ് തത്വത്താലാണ്.\n3. അറ്റോമൈസറുകളും സ്പ്രേയറുകളും പ്രവർത്തിക്കുന്നത് ന്യൂട്ടന്റെ ഗുരുത്വാകർഷണ നിയമപ്രകാരമാണ്.", options: ["1 മാത്രം ശരിയാണ്", "2 മാത്രം ശരിയാണ്", "1, 2 ശരിയാണ്", "1, 3 ശരിയാണ്"], ans: 0, exp: "2, 3 പ്രസ്താവനകൾ തെറ്റാണ്[cite: 11]. വിമാന ചിറകിന്റെ ഉയർത്തൽ, അറ്റോമൈസർ, സ്പ്രേയർ എന്നിവ ബർണോളി തത്വത്തെ അടിസ്ഥാനമാക്കിയുള്ളതാണ്[cite: 11]. അതിനാൽ 1 മാത്രം ശരി[cite: 11]." },
-      { q: "ആർക്കിമിഡീസ് തത്ത്വത്തെയും പ്ലവക്ഷമബലത്തെയും (Buoyancy) സംബന്ധിച്ച പ്രസ്താവനകളിൽ ശരിയായത് ഏത്?\n1. ഒരു വസ്തു ദ്രാവകത്തിൽ പൂർണ്ണമായോ ഭാഗികമായോ മുങ്ങിയിരിക്കുമ്പോൾ അനുഭവപ്പെടുന്ന പ്ലവക്ഷമബലം വസ്തുവിന്റെ ഭാരത്തേക്കാൾ എപ്പോഴും ഇരട്ടിയായിരിക്കും.\n2. കപ്പലുകൾ വെള്ളത്തിൽ പൊങ്ങിനിൽക്കുന്നത് പാസ്കൽ നിയമത്താലാണ്.\n3. ഒരു വസ്തു ദ്രാവകത്തിൽ മുങ്ങിയിരിക്കുമ്പോൾ അനുഭവപ്പെടുന്ന മുകളിലേക്കുള്ള പ്ലവക്ഷമബലം അത് ആദേശം ചെയ്ത ദ്രാവകത്തിന്റെ ഭാരത്തിന് തുല്യമായിരിക്കും.", options: ["1, 2 ശരിയാണ്", "1, 3 ശരിയാണ്", "2, 3 ശരിയാണ്", "3 മാത്രം ശരിയാണ്"], ans: 3, exp: "1, 2 പ്രസ്താവനകൾ തെറ്റാണ്[cite: 11]. കപ്പലുകൾ പൊങ്ങിനിൽക്കുന്നത് ആർക്കിമിഡീസ് തത്വത്തെ അടിസ്ഥാനമാക്കിയാണ്[cite: 11]. പ്ലവക്ഷമബലം ആദേശം ചെയ്യപ്പെട്ട ദ്രാവകത്തിന്റെ ഭാരത്തിന് തുല്യമാണ്[cite: 11]. അതിനാൽ 3-ാമത്തെ പ്രസ്താവന മാത്രം ശരി[cite: 11]." },
-      { q: "പ്രതലബലത്തെയും (Surface Tension) കാപ്പിലാരിറ്റിയെയും കുറിച്ചുള്ള പ്രസ്താവനകൾ ഏവ?\n1. ദ്രാവക തന്മാത്രകൾ തമ്മിലുള്ള സംയോജന ബലം മൂലം ദ്രാവക ഉപരിതലം വലിഞ്ഞു മുറുകിയ പാടപോലെ വർത്തിക്കുന്നതാണ് പ്രതലബലം.\n2. മഴത്തുള്ളികൾ ഗോളാകൃതി കൈവരിക്കുന്നത് പ്രതലബലം മൂലമാണ്.\n3. മണ്ണെണ്ണ വിളക്കിലെ തിരിയിലൂടെ എണ്ണ മുകളിലേക്ക് കയറുന്നത് ന്യൂട്ടന്റെ ഒന്നാം ചലനനിയമത്താലാണ്.", options: ["1, 3 ശരിയാണ്", "1, 2 ശരിയാണ്", "2, 3 ശരിയാണ്", "എല്ലാ പ്രസ്താവനകളും ശരിയാണ്"], ans: 1, exp: "മൂന്നാമത്തെ പ്രസ്താവന തെറ്റാണ്[cite: 11]. വിളക്കിലെ തിരിയിലൂടെ എണ്ണ കയറുന്നത് കേശികത്വ പ്രതിഭാസം (Capillarity) മൂലമാണ്[cite: 11]. 1, 2 ശരിയാണ്[cite: 11]." },
-      { q: "വിസ്കോസിറ്റിയെയും (Viscosity / ശ്യാനത) സ്റ്റോക്സ് നിയമത്തെയും സംബന്ധിച്ച പ്രസ്താവനകൾ ഏവ?\n1. ദ്രാവക പാളികൾക്കിടയിലുള്ള ആന്തരിക ഘർഷണമാണ് വിസ്കോസിറ്റി.\n2. ജലത്തേക്കാൾ കൂടുതൽ വിസ്കോസിറ്റിയുള്ള ദ്രാവകങ്ങളാണ് വെളിച്ചെണ്ണയും ഗ്ലിസറിനും തേനും.\n3. ശ്യാന മാധ്യമത്തിലൂടെ താഴേക്ക് പതിക്കുന്ന വസ്തു കൈവരിക്കുന്ന സ്ഥിരമായ പരമാവധി പ്രവേഗമാണ് ടെർമിനൽ വെലോസിറ്റി.", options: ["1, 2 ശരിയാണ്", "2, 3 ശരിയാണ്", "1, 3 ശരിയാണ്", "1, 2, 3 പ്രസ്താവനകളും ശരിയാണ്"], ans: 3, exp: "വിസ്കോസിറ്റിയുടെ സവിശേഷതകളെയും ടെർമിനൽ വെലോസിറ്റിയെയും കുറിച്ചുള്ള മൂന്ന് പ്രസ്താവനകളും ശരിയാണ്[cite: 11]." },
-      { q: "ഭൂസ്ഥിര ഉപഗ്രഹങ്ങളെക്കുറിച്ചുള്ള (Geostationary Satellites) ഭ്രമണ സവിശേഷതകൾ ഏവ?\n1. ഭൂസ്ഥിര ഉപഗ്രഹങ്ങളുടെ പരിക്രമണ കാലം ഭൂമിയുടെ ഭ്രമണ കാലത്തിന് തുല്യമായിരിക്കും (24 മണിക്കൂർ).\n2. ഭൂമധ്യരേഖാ തലത്തിൽ പടിഞ്ഞാറ് നിന്ന് കിഴക്കോട്ടാണ് ഇവ സഞ്ചരിക്കുന്നത്.\n3. ഇവ ഭൂമിയുടെ ഉപരിതലത്തിൽ നിന്ന് വെറും 500 കിലോമീറ്റർ ഉയരത്തിലാണ് സ്ഥിതിചെയ്യുന്നത്.", options: ["1, 2 ശരിയാണ്", "2, 3 ശരിയാണ്", "1, 3 ശരിയാണ്", "എല്ലാ പ്രസ്താവനകളും ശരിയാണ്"], ans: 0, exp: "മൂന്നാമത്തെ പ്രസ്താവന തെറ്റാണ്[cite: 11]. ഭൗമസ്ഥിര ഉപഗ്രഹങ്ങളുടെ ഭ്രമണപഥ ഉയരം ഉപരിതലത്തിൽ നിന്ന് ഏകദേശം 36,000 കിലോമീറ്ററാണ്[cite: 11]. 1, 2 ശരിയാണ്[cite: 11]." },
-      { q: "സിമ്പിൾ പെൻഡുലത്തിന്റെ (Simple Pendulum) ആന്ദോളനത്തെ സംബന്ധിച്ച പ്രസ്താവനകൾ ഏവ?\n1. പെൻഡുലത്തിന്റെ ബോബിന്റെ (Bob) ഭാരം വർദ്ധിപ്പിച്ചാൽ ടൈം പീരീഡ് ഇരട്ടിയാകും.\n2. ഒരു പെൻഡുലത്തിന്റെ ആവർത്തനകാലം അതിന്റെ നീളത്തിന്റെ വർഗ്ഗമൂലത്തിന് നേർ അനുപാതത്തിലാണ്.\n3. തുല്യ നീളമുള്ള രണ്ട് പെൻഡുലങ്ങളിൽ ഭാരം വ്യത്യാസപ്പെട്ടാലും അവയുടെ ആവർത്തനകാലം ഒന്നുതന്നെയായിരിക്കും.", options: ["1, 2 ശരിയാണ്", "1, 3 ശരിയാണ്", "2, 3 ശരിയാണ്", "എല്ലാ പ്രസ്താവനകളും ശരിയാണ്"], ans: 2, exp: "ഒന്നാമത്തെ പ്രസ്താവന തെറ്റാണ്[cite: 11]. പെൻഡുലത്തിന്റെ ആവർത്തനകാലം ബോബിന്റെ മാസ്സിനെ ആശ്രയിക്കുന്നില്ല (നീളത്തെയും g യെയും മാത്രമേ ആശ്രയിക്കൂ)[cite: 11]. 2, 3 ശരിയാണ്[cite: 11]." },
-      { q: "ഘർഷണം കുറയ്ക്കാനുള്ള മാർഗ്ഗങ്ങളെക്കുറിച്ചുള്ള പ്രസ്താവനകൾ ഏവ?\n1. ലൂബ്രിക്കന്റുകൾ (സ്നേഹകങ്ങൾ - ഉദാ: ഗ്രീസ്, ഓയിൽ, ഗ്രാഫൈറ്റ്) ഉപയോഗിച്ച് ഘർഷണം കുറയ്ക്കാം.\n2. റോഡുകൾ കൂടുതൽ മിനുസപ്പെടുത്തി ഘർഷണം പൂജ്യമാക്കിയാൽ വാഹനങ്ങളുടെ വേഗതയും സുരക്ഷിതത്വവും കൂടും.\n3. വാഹനാവയവങ്ങളിൽ ബോൾ ബെയറിംഗുകൾ ഉപയോഗിക്കുന്നത് ഘർഷണം ലഘൂകരിക്കുന്നു.", options: ["1, 2 ശരിയാണ്", "1, 3 ശരിയാണ്", "2, 3 ശരിയാണ്", "എല്ലാ പ്രസ്താവനകളും ശരിയാണ്"], ans: 1, exp: "രണ്ടാമത്തെ പ്രസ്താവന തെറ്റാണ്[cite: 11]. റോഡുകളിൽ ഘർഷണം പൂജ്യമായാൽ വാഹനങ്ങൾക്ക് ബ്രേക്ക് പിടിക്കാനോ നിയന്ത്രിക്കാനോ കഴിയില്ല[cite: 11]. 1, 3 ശരിയാണ്[cite: 11]." },
-      { q: "പ്രവേഗ-സമയ ഗ്രാഫിന്റെ (Velocity-Time Graph) പ്രത്യേകതകളെക്കുറിച്ചുള്ള പ്രസ്താവനകൾ ഏവ:\n1. ഒരു വെലോസിറ്റി-ടൈം ഗ്രാഫിന്റെ സ്ലോപ്പ് (ചരിവ്) വസ്തുവിന്റെ ത്വരണത്തെ പ്രതിനിധാനം ചെയ്യുന്നു.\n2. വെലോസിറ്റി-ടൈം ഗ്രാഫിനടിയിലെ വിസ്തീർണ്ണം അളന്നാൽ വസ്തുവിന്റെ ഭാരം കണ്ടെത്താം.\n3. യൂണിഫോം വെലോസിറ്റിയിൽ ചലിക്കുന്ന വസ്തുവിന്റെ ഗ്രാഫ് ഒരു നേർരേഖാ വൃത്തമായിരിക്കും.", options: ["1 മാത്രം ശരിയാണ്", "2 മാത്രം ശരിയാണ്", "1, 2 ശരിയാണ്", "1, 3 ശരിയാണ്"], ans: 0, exp: "2, 3 പ്രസ്താവനകൾ തെറ്റാണ്[cite: 11]. v-t ഗ്രാഫിനടിയിലെ വിസ്തീർണ്ണം വസ്തു സഞ്ചരിച്ച സ്ഥാനാന്തരത്തെയാണ് കാണിക്കുന്നത്[cite: 11]. അതിനാൽ 1 മാത്രം ശരി[cite: 11]." },
-      { q: "ഒരു വസ്തു മുകളിലേക്ക് എറിയപ്പെടുമ്പോൾ ഉണ്ടാകുന്ന ഊർജ്ജ മാറ്റങ്ങൾ ഏവ?\n1. വസ്തു മുകളിലേക്ക് പോകുംതോറും അതിന്റെ ചലനാത്മകോർജ്ജം കുറയുകയും സ്ഥിതികോർജ്ജം വർദ്ധിക്കുകയും ചെയ്യുന്നു.\n2. ഏറ്റവും ഉയർന്ന ബിന്ദുവിൽ എത്തുമ്പോൾ വസ്തുവിന്റെ പ്രവേഗം പൂജ്യമാകുകയും ഊർജ്ജം പൂർണ്ണമായും സ്ഥിതികോർജ്ജമായി മാറുകയും ചെയ്യുന്നു.\n3. ഏറ്റവും ഉയർന്ന ബിന്ദുവിൽ എത്തുമ്പോൾ ഗുരുത്വാകർഷണ ബലം പൂർണ്ണമായി അപ്രത്യക്ഷമാകുന്നു.", options: ["1, 3 ശരിയാണ്", "1, 2 ശരിയാണ്", "2, 3 ശരിയാണ്", "എല്ലാ പ്രസ്താവനകളും ശരിയാണ്"], ans: 1, exp: "മൂന്നാമത്തെ പ്രസ്താവന തെറ്റാണ്[cite: 11]. ഉയർന്ന ബിന്ദുവിലും വസ്തുവിന്മേൽ ഭൂമിയുടെ ഗുരുത്വാകർഷണ ബലം താഴേക്ക് പ്രവർത്തിച്ചുകൊണ്ടിരിക്കുന്നു[cite: 11]. 1, 2 ശരിയാണ്[cite: 11]." },
-      { q: "റോഡുകളിലെ ബാങ്കിംഗിനെ (Banking of Roads) സംബന്ധിച്ച പ്രസ്താവനകൾ ഏവ?\n1. വളവുകളിൽ വാഹനങ്ങൾ വേഗത്തിൽ പോകുമ്പോൾ ടയറുകൾ പൊട്ടിത്തെറിക്കാതിരിക്കാനാണ് ബാങ്കിംഗ് നൽകുന്നത്.\n2. വളവുകളിൽ റോഡിന്റെ പുറംഭാഗം ഉൾഭാഗത്തേക്കാൾ അല്പം ഉയർത്തി നിർമ്മിക്കുന്നതിനെയാണ് ബാങ്കിംഗ് എന്ന് വിളിക്കുന്നത്.\n3. വാഹനം സുരക്ഷിതമായി തിരിയാൻ ആവശ്യമായ അഭികേന്ദ്രബലം (Centripetal force) ലഭ്യമാക്കാനാണ് ബാങ്കിംഗ് ഏർപ്പെടുത്തുന്നത്.", options: ["1, 2 ശരിയാണ്", "1, 3 ശരിയാണ്", "2, 3 ശരിയാണ്", "എല്ലാ പ്രസ്താവനകളും ശരിയാണ്"], ans: 2, exp: "ഒന്നാമത്തെ പ്രസ്താവന തെറ്റാണ്[cite: 11]. വളവുകളിൽ ആവശ്യമായ അഭികേന്ദ്രബലം നൽകി വാഹനം പുറത്തേക്ക് തെന്നിപ്പോകാതിരിക്കാനാണ് ബാങ്കിംഗ് ചെയ്യുന്നത്[cite: 11]. 2, 3 ശരിയാണ്[cite: 11]." },
-      { q: "ജഡത്വവും പിണ്ഡവും (Inertia & Mass) തമ്മിലുള്ള ബന്ധത്തെക്കുറിച്ചുള്ള പ്രസ്താവനകൾ ഏവ?\n1. ഒരു വസ്തുവിന്റെ ജഡത്വത്തിന്റെ അളവുകോലാണ് അതിന്റെ പിണ്ഡം (മാസ്സ്).\n2. ഭാരം കൂടിയ വസ്തുവിന് അതിന്റെ അവസ്ഥ മാറ്റാൻ കൂടുതൽ ബലം ആവശ്യമായതിനാൽ ജഡത്വം കൂടുതലായിരിക്കും.\n3. നിശ്ചലാവസ്ഥയിലുള്ള വസ്തുക്കൾക്ക് ജഡത്വം ഉണ്ടായിരിക്കില്ല.", options: ["1, 2 ശരിയാണ്", "2, 3 ശരിയാണ്", "1, 3 ശരിയാണ്", "എല്ലാ പ്രസ്താവനകളും ശരിയാണ്"], ans: 0, exp: "മൂന്നാമത്തെ പ്രസ്താവന തെറ്റാണ്[cite: 11]. നിശ്ചലാവസ്ഥയിലുള്ള വസ്തുക്കൾക്ക് നിശ്ചല ജഡത്വം (Inertia of Rest) ഉണ്ട്[cite: 11]. 1, 2 ശരിയാണ്[cite: 11]." },
-      { q: "വിമാനങ്ങൾ ഉയരത്തിൽ സഞ്ചരിക്കുമ്പോൾ ബാരോമീറ്റർ റീഡിംഗിനെക്കുറിച്ചുള്ള പ്രസ്താവനകളിൽ ശരിയായത് ഏത്?\n1. ഉയരത്തിലേക്ക് പോകുന്തോറും അന്തരീക്ഷമർദ്ദം ഇരട്ടിയാകുന്നതിനാൽ റീഡിംഗ് അതിവേഗം ഉയരുന്നു.\n2. മലമുകളിൽ വെച്ച് ബാരോമീറ്ററിലെ മെർക്കുറി നിരപ്പ് പരമാവധി ഉയരത്തിൽ നിൽക്കും.\n3. ഉയരം വർദ്ധിക്കുമ്പോൾ അന്തരീക്ഷ വായുവിന്റെ സാന്ദ്രത കുറയുന്നതിനാൽ ബാരോമീറ്റർ റീഡിംഗ് താഴുന്നു.", options: ["1, 2 ശരിയാണ്", "1, 3 ശരിയാണ്", "2, 3 ശരിയാണ്", "3 മാത്രം ശരിയാണ്"], ans: 3, exp: "1, 2 പ്രസ്താവനകൾ തെറ്റാണ്[cite: 11]. ഉയരം കൂടുമ്പോൾ മർദ്ദം കുറയുന്നതിനാൽ ബാരോമീറ്റർ നിരപ്പ് താഴുകയാണ് ചെയ്യുന്നത്[cite: 11]. അതിനാൽ 3-ാമത്തെ പ്രസ്താവന മാത്രമാണ് ശരി[cite: 11]." },
-      { q: "അടഞ്ഞ മുറിക്കുള്ളിൽ പ്രവർത്തിക്കുന്ന റഫ്രിജറേറ്ററിന്റെ വാതിൽ തുറന്നുവെച്ചാൽ മുറിയിലെ താപനിലയെക്കുറിച്ചുള്ള പ്രസ്താവനകൾ ഏവ?\n1. ഫ്രിഡ്ജിന്റെ വാതിൽ തുറന്നുവെച്ചാൽ മുറിയിലെ ചൂട് കുറയില്ല, മറിച്ച് താപനില ക്രമേണ വർദ്ധിക്കുകയാണ് ചെയ്യുക.\n2. മുറി ഉടൻ തന്നെ എയർകണ്ടീഷണർ പോലെ തണുത്തുറയും.\n3. ഫ്രിഡ്ജ് ഉൾവശത്ത് നിന്ന് പുറന്തള്ളുന്ന ചൂട് മോട്ടോറിന്റെ അധിക പ്രവർത്തന താപത്തോടൊപ്പം മുറിയിലേക്ക് തന്നെ എത്തുന്നതാണ് ഇതിന് കാരണം.", options: ["1, 2 ശരിയാണ്", "1, 3 ശരിയാണ്", "2, 3 ശരിയാണ്", "എല്ലാ പ്രസ്താവനകളും ശരിയാണ്"], ans: 1, exp: "രണ്ടാമത്തെ പ്രസ്താവന തെറ്റാണ്[cite: 11]. ഫ്രിഡ്ജ് റൂമിലേക്ക് താപം പുറന്തള്ളുന്ന തെർമോഡൈനാമിക് ഉപകരണമായതിനാൽ വാതിൽ തുറന്നാൽ മുറി കൂടുതൽ ചൂടാവുകയേ ഉള്ളൂ[cite: 11]. 1, 3 ശരിയാണ്[cite: 11]." },
-      { q: "ഗുരുത്വാകർഷണ ബലത്തിന്റെ സാർവ്വത്രിക പ്രകൃതിയെക്കുറിച്ചുള്ള പ്രസ്താവനകൾ ഏവ?\n1. പ്രകൃതിയിലെ നാല് അടിസ്ഥാന ബലങ്ങളിൽ ഏറ്റവും ദുർബലമായ ബലമാണ് ഗുരുത്വാകർഷണ ബലം.\n2. അനന്തമായ ദൂരപരിധി വരെ വ്യാപിക്കുന്ന ആകർഷണ ബലമാണിത്.\n3. ഗുരുത്വാകർഷണ ബലം രണ്ട് വസ്തുക്കൾ തമ്മിൽ വികർഷണം ഉണ്ടാക്കാൻ സാധ്യതയുണ്ട്.", options: ["1, 2 ശരിയാണ്", "2, 3 ശരിയാണ്", "1, 3 ശരിയാണ്", "എല്ലാ പ്രസ്താവനകളും ശരിയാണ്"], ans: 0, exp: "മൂന്നാമത്തെ പ്രസ്താവന തെറ്റാണ്[cite: 11]. ഗുരുത്വാകർഷണം കേവലം ആകർഷണ ബലം മാത്രമാണ്; ഇതിന് വികർഷണ സ്വഭാവമില്ല[cite: 11]. 1, 2 ശരിയാണ്[cite: 11]." },
-      { q: "ആക്സിലറേഷൻ ഡ്യൂ ടു ഗ്രാവിറ്റിയുടെ (g) മൂല്യത്തെക്കുറിച്ചുള്ള പ്രസ്താവനകൾ ഏവ?\n1. 'g' യുടെ മൂല്യം വീഴുന്ന വസ്തുവിന്റെ ഭാരത്തെയും വലിപ്പത്തെയും ആശ്രയിച്ചിരിക്കുന്നു.\n2. വായുരഹിതമായ ശൂന്യതയിൽ ഒരു ഭാരമേറിയ ഇരുമ്പുഗോളവും ഒരു തൂവലും ഒരേ ഉയരത്തിൽ നിന്ന് ഒരേസമയം താഴേക്ക് വീഴും.\n3. ഗലീലിയോ ആണ് വസ്തുക്കളുടെ വീഴ്ചാ നിരക്ക് അവയുടെ മാസ്സിനെ ആശ്രയിക്കുന്നില്ലെന്ന് തെളിയിച്ചത്.", options: ["1, 2 ശരിയാണ്", "1, 3 ശരിയാണ്", "2, 3 ശരിയാണ്", "എല്ലാ പ്രസ്താവനകളും ശരിയാണ്"], ans: 2, exp: "ഒന്നാമത്തെ പ്രസ്താവന തെറ്റാണ്[cite: 11]. 'g' യുടെ മൂല്യം വീഴുന്ന വസ്തുവിന്റെ പിണ്ഡത്തെ ആശ്രയിക്കുന്നില്ല (g = GM/R²)[cite: 11]. 2, 3 ശരിയാണ്[cite: 11]." },
-      { q: "വാഹനങ്ങളുടെ ഓഡോമീറ്ററും സ്പീഡോമീറ്ററും സംബന്ധിച്ച പ്രസ്താവനകൾ ഏവ:\n1. ഒരു വാഹനം സഞ്ചരിച്ച ആകെ ദൂരം രേഖപ്പെടുത്തുന്ന ഉപകരണമാണ് ഓഡോമീറ്റർ (Odometer).\n2. സ്പീഡോമീറ്റർ കാണിക്കുന്നത് വാഹനത്തിന്റെ ശരാശരി ആകെ വേഗതയാണ്.\n3. ഓഡോമീറ്റർ നിർണ്ണയിക്കുന്നത് വാഹനത്തിലെ ഇന്ധനത്തിന്റെ സാന്ദ്രതയാണ്.", options: ["1 മാത്രം ശരിയാണ്", "2 മാത്രം ശരിയാണ്", "1, 2 ശരിയാണ്", "1, 3 ശരിയാണ്"], ans: 0, exp: "2, 3 പ്രസ്താവനകൾ തെറ്റാണ്[cite: 11]. സ്പീഡോമീറ്റർ തത്സമയ വേഗതയാണ് കാണിക്കുന്നത്[cite: 11]. ആകെ സഞ്ചരിച്ച ദൂരമാണ് ഓഡോമീറ്റർ രേഖപ്പെടുത്തുന്നത്[cite: 11]. അതിനാൽ 1 മാത്രം ശരി[cite: 11]." },
-      { q: "ഹൈഡ്രോമീറ്ററും ലാക്ടോമീറ്ററും സംബന്ധിച്ച പ്രസ്താവനകൾ ഏവ?\n1. ദ്രാവകങ്ങളുടെ ആപേക്ഷിക സാന്ദ്രത (Relative Density) അളക്കാൻ ഉപയോഗിക്കുന്ന ഉപകരണമാണ് ഹൈഡ്രോമീറ്റർ.\n2. പാലിന്റെ ശുദ്ധി നിർണ്ണയിക്കാൻ ഉപയോഗിക്കുന്ന ഉപകരണം ലാക്ടോമീറ്റർ ആണ്.\n3. ഇവ രണ്ടും പാസ്കൽ നിയമത്തെ അടിസ്ഥാനമാക്കിയാണ് പ്രവർത്തിക്കുന്നത്.", options: ["1, 3 ശരിയാണ്", "1, 2 ശരിയാണ്", "2, 3 ശരിയാണ്", "എല്ലാ പ്രസ്താവനകളും ശരിയാണ്"], ans: 1, exp: "മൂന്നാമത്തെ പ്രസ്താവന തെറ്റാണ്[cite: 11]. ഹൈഡ്രോമീറ്ററും ലാക്ടോമീറ്ററും പ്ലവന തത്ത്വത്തെയും ആർക്കിമിഡീസ് തത്വത്തെയുമാണ് അടിസ്ഥാനമാക്കിയിരിക്കുന്നത്[cite: 11]. 1, 2 ശരിയാണ്[cite: 11]." },
-      { q: "ക്ലാസിക്കൽ മെക്കാനിക്സിന്റെയും ചലന-ബല നിയമങ്ങളുടെയും ആകെത്തുകയെക്കുറിച്ചുള്ള പ്രസ്താവനകൾ ഏവ?\n1. ന്യൂട്ടോണിയൻ മെക്കാനിക്സ് ഭൗമോപരിതലത്തിലെ നിത്യജീവിത ചലനങ്ങളെയും വാഹന സാങ്കേതികവിദ്യയെയും കൃത്യമായി വിശദീകരിക്കുന്നു.\n2. ഗുരുത്വാകർഷണ നിയമങ്ങൾ സൗരയൂഥത്തിലെ ഗ്രഹങ്ങളുടെ ഭ്രമണവും കൃത്രിമ ഉപഗ്രഹങ്ങളുടെ വിക്ഷേപണവും സാധ്യമാക്കുന്നു.\n3. ബലം, സംവേഗം, ഊർജ്ജ സംരക്ഷണം എന്നിവ ഭൗതികശാസ്ത്രത്തിലെ മൗലിക സംരക്ഷണ നിയമങ്ങളായി എക്കാലവും നിലകൊള്ളുന്നു.", options: ["1, 2 ശരിയാണ്", "2, 3 ശരിയാണ്", "1, 3 ശരിയാണ്", "1, 2, 3 പ്രസ്താവനകളും ശരിയാണ്"], ans: 3, exp: "മെക്കാനിക്സ്, ബലതന്ത്രം, ഗുരുത്വാകർഷണം എന്നിവയുടെ സമഗ്ര പ്രസക്തി വ്യക്തമാക്കുന്ന മൂന്ന് പ്രസ്താവനകളും ശരിയാണ്[cite: 11]." }
+      { q: "ആറ്റത്തെ പോസിറ്റീവ് ചാർജ്ജുള്ള ഗോളമായും ഇലക്ട്രോണുകളെ അതിൽ പതിഞ്ഞുകിടക്കുന്നതായും വിഭാവനം ചെയ്ത 'പ്ലം പുഡ്ഡിംഗ് മോഡൽ' ആവിഷ്കരിച്ചത് ആര്?", options: ["ജോൺ ഡാൽട്ടൺ", "ജെ.ജെ. തോംസൺ", "ഏണസ്റ്റ് റൂഥർഫോർഡ്", "നീൽസ് ബോർ"], ans: 1, exp: "1897-ൽ ഇലക്ട്രോൺ കണ്ടെത്തിയ ജെ.ജെ. തോംസൺ ആണ് വാട്ടർമെലൺ മോഡൽ അഥവാ പ്ലം പുഡ്ഡിംഗ് മോഡൽ അവതരിപ്പിച്ചത്." },
+      { q: "സ്വർണ്ണത്തകിട് ആൽഫാ കണ പരീക്ഷണത്തിലൂടെ (Alpha Particle Scattering Experiment) ആറ്റത്തിന് ഒരു പോസിറ്റീവ് ന്യൂക്ലിയസ് ഉണ്ടെന്ന് കണ്ടെത്തിയത് ആര്?", options: ["നീൽസ് ബോർ", "ജെയിംസ് ചാഡ്വിക്", "ഏണസ്റ്റ് റൂഥർഫോർഡ്", "മാക്സ് പ്ലാങ്ക്"], ans: 2, exp: "1911-ൽ റൂഥർഫോർഡ് നടത്തിയ ആൽഫാ കണ വിസരണ പരീക്ഷണമാണ് ആറ്റത്തിന്റെ ഭൂരിഭാഗം പിണ്ഡവും കേന്ദ്രീകരിച്ചിരിക്കുന്ന ന്യൂക്ലിയസ് കണ്ടുപിടിക്കാൻ സഹായിച്ചത്." },
+      { q: "ആറ്റത്തിലെ ഇലക്ട്രോണുകൾ ന്യൂക്ലിയസിന് ചുറ്റും നിശ്ചിത ഊർജ്ജമുള്ള വൃത്താകാര പാതകളിൽ (ഓർബിറ്റുകൾ) കറങ്ങുന്നു എന്ന ആറ്റം മാതൃക മുന്നോട്ടുവെച്ചത് ആര്?", options: ["റൂഥർഫോർഡ്", "നീൽസ് ബോർ", "ജെ.ജെ. തോംസൺ", "ലൂയി ഡിബ്രോളി"], ans: 1, exp: "ക്വാണ്ടം സിദ്ധാന്തത്തെ ആസ്പദമാക്കി 1913-ൽ നീൽസ് ബോറാണ് ഊർജ്ജ നിലകൾ (K, L, M, N ഷെല്ലുകൾ) അടങ്ങിയ ആറ്റം മാതൃക അവതരിപ്പിച്ചത്." },
+      { q: "ആധുനിക പീരിയോഡിക് ടേബിളിൽ മൂലകങ്ങളെ അവയുടെ ഏത് ക്രമത്തിലാണ് ക്രമീകരിച്ചിരിക്കുന്നത്?", options: ["അറ്റോമിക മാസ് വർദ്ധിക്കുന്ന ക്രമത്തിൽ", "അറ്റോമിക നമ്പർ വർദ്ധിക്കുന്ന ക്രമത്തിൽ", "അയോണീകരണ ഊർജ്ജം കുറയുന്ന ക്രമത്തിൽ", "സാന്ദ്രത വർദ്ധിക്കുന്ന ക്രമത്തിൽ"], ans: 1, exp: "ഹെൻറി മോസ്ലിയുടെ ആധുനിക പീരിയോഡിക് നിയമപ്രകാരം മൂലകങ്ങളുടെ ഭൗതിക-രാസ ഗുണങ്ങൾ അവയുടെ അറ്റോമിക നമ്പറുകളുടെ ആവർത്തന ഫലങ്ങളാണ്." },
+      { q: "പീരിയോഡിക് ടേബിളിൽ ഒരു പിരീഡിൽ ഇടത്തുനിന്ന് വലത്തോട്ട് നീങ്ങുമ്പോൾ അറ്റോമിക ആരം (Atomic Radius) സാധാരണയായി എങ്ങനെ വ്യത്യാസപ്പെടുന്നു?", options: ["ക്രമമായി വർദ്ധിക്കുന്നു", "ക്രമമായി കുറയുന്നു", "മാറ്റമില്ലാതെ തുടരുന്നു", "ആദ്യം കുറഞ്ഞ് പിന്നീട് കൂടുന്നു"], ans: 1, exp: "ഒരേ ഷെല്ലിലേക്ക് ഇലക്ട്രോണുകൾ പ്രവേശിക്കുമ്പോൾ ന്യൂക്ലിയർ ചാർജ്ജ് വർദ്ധിക്കുകയും ബാഹ്യതമ ഇലക്ട്രോണുകളെ കൂടുതൽ ശക്തമായി ആകർഷിക്കുകയും ചെയ്യുന്നതിനാൽ അറ്റോമിക ആരം കുറയുന്നു." },
+      { q: "പീരിയോഡിക് ടേബിളിൽ ഏറ്റവും കൂടുതൽ അയോണീകരണ എന്താൽപ്പി (Ionisation Enthalpy) ഉള്ള മൂലകം ഏതാണ്?", options: ["ഫ്ലൂറിൻ", "ഹൈഡ്രജൻ", "ഹീലിയം", "സീസിയം"], ans: 2, exp: "സ്ഥിരതയുള്ള ഇരട്ട ഇലക്ട്രോൺ വിന്യാസവും ഏറ്റവും ചെറിയ അറ്റോമിക ആരവുമുള്ളതിനാൽ ഹീലിയത്തിനാണ് (He) ഏറ്റവും ഉയർന്ന അയോണീകരണ ഊർജ്ജമുള്ളത്." },
+      { q: "പീരിയോഡിക് ടേബിളിൽ ഏറ്റവും കുറഞ്ഞ അയോണീകരണ എന്താൽപ്പിയുള്ളതും ഏറ്റവും വേഗത്തിൽ ഇലക്ട്രോൺ വിട്ടുകൊടുക്കുന്നതുമായ സ്ഥിരതയുള്ള മൂലകം ഏത്?", options: ["ലിഥിയം", "ഫ്രാൻസിയം", "സീസിയം", "പൊട്ടാസ്യം"], ans: 2, exp: "റേഡിയോ ആക്ടീവല്ലാത്ത മൂലകങ്ങളിൽ ഗ്രൂപ്പിൽ താഴേക്ക് പോകുന്തോറും ഷെല്ലുകളുടെ എണ്ണം കൂടി വലിപ്പം കൂടുന്നതിനാൽ സീസിയത്തിന് ഏറ്റവും കുറഞ്ഞ അയോണീകരണ എന്താൽപ്പിയാണുള്ളത്." },
+      { q: "പോളിംഗ് സ്കെയിൽ പ്രകാരം പീരിയോഡിക് ടേബിളിൽ ഏറ്റവും കൂടുതൽ ഇലക്ട്രോനെഗറ്റിവിറ്റി (Electronegativity - 4.0) ഉള്ള മൂലകം ഏതാണ്?", options: ["ക്ലോറിൻ", "ഓക്സിജൻ", "ഫ്ലൂറിൻ", "നൈട്രജൻ"], ans: 2, exp: "രാസബന്ധനത്തിലെ പങ്കുവെച്ച ഇലക്ട്രോൺ ജോഡിയെ സ്വന്തം ഭാഗത്തേക്ക് ആകർഷിക്കാനുള്ള പ്രവണതയായ ഇലക്ട്രോനെഗറ്റിവിറ്റി ഏറ്റവും കൂടുതൽ ഫ്ലൂറിനാണ് (4.0)." },
+      { q: "പീരിയോഡിക് ടേബിളിൽ ഏറ്റവും കൂടുതൽ ഇലക്ട്രോൺ അഫിനിറ്റി (Electron Gain Enthalpy) പ്രകടിപ്പിക്കുന്ന മൂലകം ഏതാണ്?", options: ["ഫ്ലൂറിൻ", "ക്ലോറിൻ", "ബ്രോമിൻ", "അയോഡിൻ"], ans: 1, exp: "ഫ്ലൂറിന്റെ ചെറിയ വലിപ്പവും ഇലക്ട്രോൺ വികർഷണവും കാരണം ഫ്ലൂറിനേക്കാൾ ഉയർന്ന ഇലക്ട്രോൺ സ്വീകരണ എന്താൽപ്പി ക്ലോറിനാണ് (Cl)." },
+      { q: "പീരിയോഡിക് ടേബിളിലെ 18-ാം ഗ്രൂപ്പ് മൂലകങ്ങൾ (ഉത്കൃഷ്ട വാതകങ്ങൾ) ഏത് ബ്ലോക്കിലാണ് ഉൾപ്പെടുന്നത്?", options: ["s-ബ്ലോക്ക്", "p-ബ്ലോക്ക്", "d-ബ്ലോക്ക്", "f-ബ്ലോക്ക്"], ans: 1, exp: "ഹീലിയം ഒഴികെയുള്ള 18-ാം ഗ്രൂപ്പ് ഉത്കൃഷ്ട വാതകങ്ങളുടെ ബാഹ്യതമ ഇലക്ട്രോൺ വിന്യാസം ns2 np6 ആണ്. ഇവ p-ബ്ലോക്കിൽ ഉൾപ്പെടുന്നു." },
+      { q: "സംക്രമണ മൂലകങ്ങൾ (Transition Elements) പീരിയോഡിക് ടേബിളിലെ ഏത് ബ്ലോക്കിലാണ് ഉൾപ്പെടുന്നത്?", options: ["s-ബ്ലോക്ക്", "p-ബ്ലോക്ക്", "d-ബ്ലോക്ക്", "f-ബ്ലോക്ക്"], ans: 2, exp: "3 മുതൽ 12 വരെയുള്ള ഗ്രൂപ്പുകളിലായി സ്ഥിതിചെയ്യുന്നതും വ്യത്യസ്ത ഓക്സീകരണാവസ്ഥകൾ കാണിക്കുന്നതുമായ മൂലകങ്ങളാണ് d-ബ്ലോക്ക് അഥവാ സംക്രമണ മൂലകങ്ങൾ." },
+      { q: "ഒരു നിശ്ചിത താപനിലയിൽ കൂടുതൽ ലീനം ലയിച്ചുചേരാൻ സാധിക്കാത്ത വിധം പരമാവധി ലീനം അടങ്ങിയിരിക്കുന്ന ലായനി ഏത്?", options: ["അപൂരിത ലായനി", "പൂരിത ലായനി", "അതിപൂരിത ലായനി", "നേർപ്പിച്ച ലായനി"], ans: 1, exp: "ഒരു നിശ്ചിത താപനിലയിൽ പരമാവധി ലീനം ഉൾക്കൊണ്ടിരിക്കുന്ന ലായനിയാണ് പൂരിത ലായനി (Saturated Solution)." },
+      { q: "ദ്രാവക ലായകത്തിൽ ഒരു വാതക ലീനത്തിന്റെ ലേയത്വം (Solubility) മർദ്ദത്തിന് നേർ അനുപാതത്തിലായിരിക്കും എന്ന് വ്യക്തമാക്കുന്ന നിയമം ഏത്?", options: ["ബോയിൽ നിയമം", "ഹെൻറി നിയമം", "ചാൾസ് നിയമം", "റൗൾട്ട് നിയമം"], ans: 1, exp: "സോഡാ വാട്ടറിലും ശീതളപാനീയങ്ങളിലും ഉയർന്ന മർദ്ദത്തിൽ കാർബൺ ഡയോക്സൈഡ് ലയിപ്പിച്ചു ചേർക്കുന്നത് ഹെൻറി നിയമത്തെ അടിസ്ഥാനമാക്കിയാണ്." },
+      { q: "കൊളോയിഡൽ കണികകളിലൂടെ പ്രകാശകിരണങ്ങൾ കടന്നുപോകുമ്പോൾ പ്രകാശപാത ദൃശ്യമാകുന്ന പ്രകാശ വിസരണ പ്രതിഭാസം ഏത്?", options: ["ബ്രൗണിയൻ ചലനം", "ടിൻഡൽ പ്രഭാവം", "ഇലക്ട്രോഫോറെസിസ്", "ഡയാലിസിസ്"], ans: 1, exp: "കൊളോയിഡൽ കണികകളിൽ തട്ടി പ്രകാശകിരണങ്ങൾ വിസരിക്കുന്ന പ്രതിഭാസമാണ് ടിൻഡൽ പ്രഭാവം." },
+      { q: "ഒരു കൊളോയിഡൽ ലായനിയിൽ പരന്നുകിടക്കുന്ന കണികകൾ ക്രമരഹിതമായി എല്ലാ ദിശകളിലേക്കും നടത്തുന്ന സിഗ്-സാഗ് ചലനത്തിന് പറയുന്ന പേരെന്ത്?", options: ["ടിൻഡൽ ചലനം", "ബ്രൗണിയൻ ചലനം", "അയോണീകരണം", "സബ്ളിമേഷൻ"], ans: 1, exp: "റോബർട്ട് ബ്രൗൺ കണ്ടെത്തിയ കൊളോയിഡൽ കണികകളുടെ തുടർച്ചയായ ക്രമരഹിത ചലനമാണ് ബ്രൗണിയൻ മൂവ്മെന്റ്." },
+      { q: "പാൽ (Milk) ഏത് തരം കൊളോയിഡിന് ഉദാഹരണമാണ്?", options: ["എമൽഷൻ", "എയറോസോൾ", "ഫോം", "സോൾ"], ans: 0, exp: "ഒരു ദ്രാവകത്തിൽ മറ്റൊരു ദ്രാവകം ചിതറിക്കിടക്കുന്ന (ദ്രാവകം-ദ്രാവകം) കൊളോയിഡൽ രൂപമാണ് എമൽഷൻ. പാൽ എമൽഷന് ഉദാഹരണമാണ്." },
+      { q: "ജലത്തിൽ ലയിപ്പിക്കുമ്പോൾ ഹൈഡ്രോണിയം അയോണുകൾ (H3O+ / H+) നൽകുന്ന പദാർത്ഥങ്ങളാണ് ആസിഡുകൾ എന്ന് നിർവ്വചിച്ച സിദ്ധാന്തം ഏത്?", options: ["അർഹീനിയസ് സിദ്ധാന്തം", "ബ്രോൺസ്റ്റഡ്-ലോറി സിദ്ധാന്തം", "ലൂയിസ് സിദ്ധാന്തം", "ബോർ സിദ്ധാന്തം"], ans: 0, exp: "അർഹീനിയസ് സിദ്ധാന്തപ്രകാരം ജലീയ ലായനിയിൽ H+ അയോണുകൾ സ്വതന്ത്രമാക്കുന്നവ ആസിഡുകളും OH- അയോണുകൾ സ്വതന്ത്രമാക്കുന്നവ ആൽക്കലികളുമാണ്." },
+      { q: "ബ്രോൺസ്റ്റഡ്-ലോറി (Brønsted–Lowry) സിദ്ധാന്ത പ്രകാരം ഒരു 'പ്രോട്ടോൺ ദാതാവ്' (Proton Donor) ആയി വർത്തിക്കുന്ന പദാർത്ഥം ഏതാണ്?", options: ["ബേസ്", "ആസിഡ്", "ലവണം", "ഇലക്ട്രോലൈറ്റ്"], ans: 1, exp: "ബ്രോൺസ്റ്റഡ്-ലോറി സിദ്ധാന്തപ്രകാരം പ്രോട്ടോൺ (H+) നൽകുന്നവ ആസിഡും പ്രോട്ടോൺ സ്വീകരിക്കുന്നവ (Proton Acceptor) ബേസുമാണ്." },
+      { q: "ഒരു രാസപ്രവർത്തനത്തിൽ ഇലക്ട്രോൺ ജോഡിയെ സ്വീകരിക്കാൻ (Electron-pair Acceptor) കഴിവുള്ള പദാർത്ഥങ്ങളെ എന്ത് വിളിക്കുന്നു?", options: ["ലൂയിസ് ബേസ്", "ലൂയിസ് ആസിഡ്", "ന്യൂട്രൽ ലായനി", "ആൽക്കലി"], ans: 1, exp: "ഇലക്ട്രോൺ ജോഡിയെ സ്വീകരിക്കുന്നവ ലൂയിസ് ആസിഡും (ഉദാ: BF3, AlCl3), ഇലക്ട്രോൺ ജോഡിയെ ദാനം ചെയ്യുന്നവ ലൂയിസ് ബേസും (ഉദാ: NH3) ആണ്." },
+      { q: "ആസിഡും ആൽക്കലിയും തമ്മിൽ പ്രവർത്തിച്ച് ലവണവും ജലവും ഉണ്ടാകുന്ന രാസപ്രവർത്തനം ഏത് പേരിൽ അറിയപ്പെടുന്നു?", options: ["അപഗ്രഥനം", "ശമനീകരണം", "ഓക്സീകരണം", "റിഡക്ഷൻ"], ans: 1, exp: "ആസിഡും ബേസും പരസ്പരം പ്രതിപ്രവർത്തിച്ച് ഗുണങ്ങൾ നിർവീര്യമാക്കി ലവണവും ജലവും ഉണ്ടാകുന്ന പ്രക്രിയയാണ് ന്യൂട്രലൈസേഷൻ." },
+      { q: "റൂഥർഫോർഡിന്റെ ആറ്റം മാതൃകയെക്കുറിച്ചുള്ള പ്രസ്താവനകൾ പരിശോധിക്കുക:\n1. ആറ്റത്തിന്റെ കേന്ദ്രത്തിൽ പോസിറ്റീവ് ചാർജ്ജുള്ള വളരെ ചെറിയ ന്യൂക്ലിയസ് സ്ഥിതിചെയ്യുന്നു.\n2. ആറ്റത്തിന് എന്തുകൊണ്ട് സ്ഥിരതയുണ്ടാകുന്നു എന്ന് റൂഥർഫോർഡ് വിജയകരമായി തെളിയിച്ചു.\n3. ഇലക്ട്രോണുകൾ നിശ്ചിത ഊർജ്ജമുള്ള ക്വാണ്ടം ഭ്രമണപഥങ്ങളിൽ മാറ്റമില്ലാതെ കറങ്ങുന്നുവെന്ന് അദ്ദേഹം സമർത്ഥിച്ചു.", options: ["1 മാത്രം ശരിയാണ്", "1, 2 ശരിയാണ്", "2, 3 ശരിയാണ്", "എല്ലാ പ്രസ്താവനകളും ശരിയാണ്"], ans: 0, exp: "2, 3 പ്രസ്താവനകൾ തെറ്റാണ്. റൂഥർഫോർഡ് മാതൃകയുടെ പ്രധാന ന്യൂനത ആറ്റത്തിന്റെ സ്ഥിരതയും ഹൈഡ്രജൻ സ്പെക്ട്രവും വിശദീകരിക്കാൻ കഴിഞ്ഞില്ല എന്നതാണ്. നിശ്ചിത ഊർജ്ജ നിലകൾ മുന്നോട്ടുവെച്ചത് നീൽസ് ബോർ ആണ്. അതിനാൽ 1 മാത്രം ശരി." },
+      { q: "നീൽസ് ബോറിന്റെ ആറ്റം സിദ്ധാന്തത്തെ സംബന്ധിച്ച പ്രസ്താവനകൾ ഏവ?\n1. ഒരു പ്രത്യേക ഓർബിറ്റിൽ കറങ്ങുന്നിടത്തോളം കാലം ഇലക്ട്രോൺ ഊർജ്ജം ആഗിരണം ചെയ്യുകയോ പുറത്തുവിടുകയോ ചെയ്യുന്നില്ല.\n2. ഇലക്ട്രോണുകൾക്ക് ഏത് ആരം ഉള്ള പാതകളിലൂടെയും ഊർജ്ജ വ്യത്യാസമില്ലാതെ സ്വതന്ത്രമായി കറങ്ങാം.\n3. ഇലക്ട്രോൺ ഉയർന്ന ഊർജ്ജനിലയിൽ നിന്നും താഴ്ന്ന ഊർജ്ജനിലയിലേക്ക് ചാടുമ്പോൾ പ്രകാശ രൂപത്തിൽ ഊർജ്ജം വികിരണം ചെയ്യുന്നു.", options: ["1, 2 ശരിയാണ്", "1, 3 ശരിയാണ്", "2, 3 ശരിയാണ്", "എല്ലാം ശരിയാണ്"], ans: 1, exp: "രണ്ടാമത്തെ പ്രസ്താവന തെറ്റാണ്. കോണീയ സംവേഗം ക്വാണ്ടൈസ് ചെയ്യപ്പെട്ട നിശ്ചിത ഓർബിറ്റുകളിൽ മാത്രമേ ഇലക്ട്രോണുകൾക്ക് നിലനിൽപ്പുള്ളൂ. 1, 3 ശരിയാണ്." },
+      { q: "ആധുനിക പീരിയോഡിക് ടേബിളിന്റെ ഘടനയെക്കുറിച്ചുള്ള പ്രസ്താവനകൾ ഏവ?\n1. ആധുനിക പീരിയോഡിക് ടേബിളിൽ 7 പിരീഡുകളും 18 ഗ്രൂപ്പുകളുമാണുള്ളത്.\n2. ബാഹ്യതമ ഇലക്ട്രോൺ വിന്യാസത്തിന്റെ അടിസ്ഥാനത്തിൽ മൂലകങ്ങളെ s, p, d, f എന്നിങ്ങനെ 4 ബ്ലോക്കുകളായി തിരിച്ചിരിക്കുന്നു.\n3. ഒന്നാം ഗ്രൂപ്പ് മൂലകങ്ങൾ ആൽക്കലി ലോഹങ്ങൾ (Alkali Metals) എന്നും രണ്ടാം ഗ്രൂപ്പ് ആൽക്കലൈൻ എർത്ത് ലോഹങ്ങൾ എന്നും അറിയപ്പെടുന്നു.", options: ["1, 2 ശരിയാണ്", "2, 3 ശരിയാണ്", "1, 3 ശരിയാണ്", "1, 2, 3 പ്രസ്താവനകളും ശരിയാണ്"], ans: 3, exp: "ആധുനിക പീരിയോഡിക് ടേബിളിന്റെ ഘടന, പിരീഡുകൾ, ഗ്രൂപ്പുകൾ, ബ്ലോക്ക് വർഗ്ഗീകരണം എന്നിവ വ്യക്തമാക്കുന്ന മൂന്ന് പ്രസ്താവനകളും ശരിയാണ്." },
+      { q: "അറ്റോമിക ആരത്തിന്റെ (Atomic Radius) പീരിയോഡിക് പ്രവണതകളെക്കുറിച്ചുള്ള പ്രസ്താവനകൾ ഏവ?\n1. ഒരു ഗ്രൂപ്പിൽ മുകളിൽ നിന്ന് താഴേക്ക് പോകുംതോറും അറ്റോമിക ആരം ക്രമമായി കുറയുന്നു.\n2. ഒരു ഗ്രൂപ്പിൽ താഴേക്ക് പോകുംതോറും പുതിയ ഷെല്ലുകൾ കൂട്ടിച്ചേർക്കപ്പെടുന്നതിനാൽ അറ്റോമിക ആരം വർദ്ധിക്കുന്നു.\n3. ഒരു പിരീഡിൽ ഇടത്തുനിന്ന് വലത്തോട്ട് പോകുംതോറും ന്യൂക്ലിയർ ചാർജ്ജ് കൂടുന്നതിനാൽ അറ്റോമിക ആരം കുറയുന്നു.", options: ["1, 2 ശരിയാണ്", "1, 3 ശരിയാണ്", "2, 3 ശരിയാണ്", "എല്ലാ പ്രസ്താവനകളും ശരിയാണ്"], ans: 2, exp: "ഒന്നാമത്തെ പ്രസ്താവന തെറ്റാണ്. ഗ്രൂപ്പിൽ താഴേക്ക് പോകുന്തോറും അറ്റോമിക ആരം വർദ്ധിക്കുകയാണ് ചെയ്യുന്നത്. 2, 3 ശരിയാണ്." },
+      { q: "അയോണീകരണ എന്താൽപ്പിയെ (Ionisation Enthalpy) സ്വാധീനിക്കുന്ന ഘടകങ്ങൾ ഏവ?\n1. അറ്റോമിക ആരം കൂടുമ്പോൾ ബാഹ്യതമ ഇലക്ട്രോണും ന്യൂക്ലിയസും തമ്മിലുള്ള ആകർഷണം കുറയുന്നതിനാൽ അയോണീകരണ എന്താൽപ്പി കുറയുന്നു.\n2. ന്യൂക്ലിയർ ചാർജ്ജ് വർദ്ധിക്കുമ്പോൾ ഇലക്ട്രോണുകളെ നീക്കം ചെയ്യാൻ കൂടുതൽ ഊർജ്ജം ആവശ്യമുള്ളതിനാൽ അയോണീകരണ എന്താൽപ്പി വർദ്ധിക്കുന്നു.\n3. പൂർണ്ണമായോ പകുതിയോ നിറഞ്ഞ ഓർബിറ്റലുകളുള്ള ആറ്റങ്ങളിൽ നിന്നും ഇലക്ട്രോണുകളെ നീക്കം ചെയ്യാൻ വളരെ കുറഞ്ഞ ഊർജ്ജം മതിയാകും.", options: ["1, 2 ശരിയാണ്", "2, 3 ശരിയാണ്", "1, 3 ശരിയാണ്", "എല്ലാ പ്രസ്താവനകളും ശരിയാണ്"], ans: 0, exp: "മൂന്നാമത്തെ പ്രസ്താവന തെറ്റാണ്. പൂർണ്ണമായോ (Full-filled) പകുതിയോ (Half-filled) നിറഞ്ഞ സ്ഥിരതയുള്ള ഓർബിറ്റലുകളിൽ നിന്ന് ഇലക്ട്രോൺ നീക്കം ചെയ്യാൻ വളരെ ഉയർന്ന അയോണീകരണ ഊർജ്ജം വേണം (ഉദാ: നൈട്രജൻ ഓക്സിജനേക്കാൾ ഉയർന്നതാണ്). 1, 2 ശരിയാണ്." },
+      { q: "ഇലക്ട്രോനെഗറ്റിവിറ്റിയെ സംബന്ധിച്ച പ്രസ്താവനകൾ പരിശോധിക്കുക:\n1. ഒരു പിരീഡിൽ ഇടത്തുനിന്ന് വലത്തോട്ട് പോകുംതോറും ഇലക്ട്രോനെഗറ്റിവിറ്റി ക്രമമായി കുറയുന്നു.\n2. ഒരു ഗ്രൂപ്പിൽ മുകളിൽ നിന്ന് താഴേക്ക് പോകുംതോറും അറ്റോമിക വലിപ്പം കൂടുന്നതിനാൽ ഇലക്ട്രോനെഗറ്റിവിറ്റി കുറയുന്നു.\n3. പീരിയോഡിക് ടേബിളിൽ ഏറ്റവും കുറഞ്ഞ ഇലക്ട്രോനെഗറ്റിവിറ്റിയുള്ള മൂലകമാണ് ഫ്ലൂറിൻ.", options: ["1 മാത്രം ശരിയാണ്", "2 മാത്രം ശരിയാണ്", "1, 3 ശരിയാണ്", "1, 2, 3 പ്രസ്താവനകളും ശരിയാണ്"], ans: 1, exp: "1, 3 പ്രസ്താവനകൾ തെറ്റാണ്. പിരീഡിൽ ഇടത്തുനിന്ന് വലത്തോട്ട് ഇലക്ട്രോനെഗറ്റിവിറ്റി വർദ്ധിക്കുകയാണ് ചെയ്യുന്നത്. ഏറ്റവും കൂടുതൽ ഇലക്ട്രോനെഗറ്റിവിറ്റിയുള്ളത് ഫ്ലൂറിനാണ് (ഏറ്റവും കുറഞ്ഞതല്ല). അതിനാൽ 2 മാത്രം ശരി." },
+      { q: "ലോഹ-അലോഹ സ്വഭാവങ്ങളുടെ പീരിയോഡിക് വ്യതിയാനങ്ങളെക്കുറിച്ചുള്ള പ്രസ്താവനകൾ ഏവ?\n1. ഒരു പിരീഡിൽ ഇടത്തുനിന്ന് വലത്തോട്ട് പോകുംതോറും ഇലക്ട്രോൺ വിട്ടുകൊടുക്കാനുള്ള പ്രവണത കുറയുന്നതിനാൽ ലോഹസ്വഭാവം (Metallic character) കുറയുന്നു.\n2. ഗ്രൂപ്പിൽ താഴേക്ക് പോകുംതോറും അലോഹ സ്വഭാവം ശക്തമായി വർദ്ധിക്കുന്നു.\n3. ഒരു ഗ്രൂപ്പിൽ താഴേക്ക് പോകുന്തോറും ഇലക്ട്രോൺ വിട്ടുകൊടുക്കൽ എളുപ്പമാകുന്നതിനാൽ ലോഹസ്വഭാവം വർദ്ധിക്കുന്നു.", options: ["1, 2 ശരിയാണ്", "2, 3 ശരിയാണ്", "1, 3 ശരിയാണ്", "എല്ലാ പ്രസ്താവനകളും ശരിയാണ്"], ans: 2, exp: "രണ്ടാമത്തെ പ്രസ്താവന തെറ്റാണ്. ഗ്രൂപ്പിൽ താഴേക്ക് പോകുന്തോറും ലോഹസ്വഭാവമാണ് വർദ്ധിക്കുന്നത്, അലോഹ സ്വഭാവം കുറയുന്നു. 1, 3 ശരിയാണ്." },
+      { q: "ലായനികളുടെ സവിശേഷതകളെ സംബന്ധിച്ച പ്രസ്താവനകൾ പരിശോധിക്കുക:\n1. രണ്ട് അല്ലെങ്കിൽ അതിലധികമോ പദാർത്ഥങ്ങളുടെ ഏകാത്മക മിശ്രിതമാണ് (Homogeneous mixture) യഥാർത്ഥ ലായനി (True Solution).\n2. ലായനിയിൽ കൂടുതൽ അളവിൽ അടങ്ങിയിരിക്കുന്ന ഘടകത്തെ ലായകം (Solvent) എന്നും കുറഞ്ഞ അളവിലുള്ളതിനെ ലീനം (Solute) എന്നും വിളിക്കുന്നു.\n3. യഥാർത്ഥ ലായനിയിലെ കണികകളെ സാധാരണ ഫിൽട്ടർ പേപ്പർ ഉപയോഗിച്ച് അരിച്ചെടുക്കാൻ സാധിക്കും.", options: ["1, 3 ശരിയാണ്", "1, 2 ശരിയാണ്", "2, 3 ശരിയാണ്", "എല്ലാ പ്രസ്താവനകളും ശരിയാണ്"], ans: 1, exp: "മൂന്നാമത്തെ പ്രസ്താവന തെറ്റാണ്. യഥാർത്ഥ ലായനിയിലെ കണികകൾക്ക് 1 നാനോമീറ്ററിൽ താഴെ വലിപ്പമേയുള്ളൂ, അതിനാൽ ഫിൽട്ടർ പേപ്പർ വഴി അരിച്ചെടുക്കാൻ കഴിയില്ല. 1, 2 ശരിയാണ്." },
+      { q: "താപനിലയും ലേയത്വവും (Solubility) തമ്മിലുള്ള ബന്ധത്തെക്കുറിച്ചുള്ള പ്രസ്താവനകൾ ഏവ?\n1. ഭൂരിഭാഗം ഖര ലീനങ്ങളുടെയും ജലത്തിലുള്ള ലേയത്വം താപനില വർദ്ധിക്കുമ്പോൾ വർദ്ധിക്കുന്നു.\n2. വാതകങ്ങൾ ദ്രാവകങ്ങളിൽ ലയിക്കുമ്പോൾ താപനില വർദ്ധിച്ചാൽ അവയുടെ ലേയത്വം കുറയുന്നു.\n3. ചൂടുകൂടിയ വെള്ളത്തിൽ ഓക്സിജന്റെ അളവ് കുറയാൻ കാരണം താപനില കൂടുമ്പോൾ വാതക ലേയത്വം കുറയുന്നതാണ്.", options: ["1, 2 ശരിയാണ്", "2, 3 ശരിയാണ്", "1, 3 ശരിയാണ്", "1, 2, 3 പ്രസ്താവനകളും ശരിയാണ്"], ans: 3, exp: "ഖരങ്ങളുടെയും വാതകങ്ങളുടെയും ലേയത്വത്തിൽ താപനില ചെലുത്തുന്ന സ്വാധീനത്തെക്കുറിച്ചുള്ള മൂന്ന് പ്രസ്താവനകളും തികച്ചും ശരിയാണ്." },
+      { q: "സസ്പെൻഷനും കൊളോയിഡും തമ്മിലുള്ള വ്യത്യാസങ്ങളെക്കുറിച്ചുള്ള പ്രസ്താവനകൾ ഏവ?\n1. സസ്പെൻഷനിലെ കണികകൾ ഗുരുത്വാകർഷണം മൂലം അടിഞ്ഞുകൂടുന്നു (ഉദാ: ചോക്കുപൊടി കലക്കിയ വെള്ളം).\n2. കൊളോയിഡിലെ കണികകൾ തനിയെ അടിഞ്ഞുകൂടാതെ ലായനിയിൽ തങ്ങിനിൽക്കുന്നു.\n3. കൊളോയിഡൽ കണികകൾ നഗ്നനേത്രങ്ങൾ കൊണ്ട് വ്യക്തമായി കാണാൻ സാധിക്കും.", options: ["1, 2 ശരിയാണ്", "2, 3 ശരിയാണ്", "1, 3 ശരിയാണ്", "എല്ലാ പ്രസ്താവനകളും ശരിയാണ്"], ans: 0, exp: "മൂന്നാമത്തെ പ്രസ്താവന തെറ്റാണ്. കൊളോയിഡൽ കണികകൾ (1 nm മുതൽ 1000 nm വരെ) നഗ്നനേത്രങ്ങൾ കൊണ്ട് കാണാനാവില്ല. 1, 2 ശരിയാണ്." },
+      { q: "ലൂയിസ് ആസിഡ്-ബേസ് സങ്കൽപ്പത്തെക്കുറിച്ചുള്ള പ്രസ്താവനകൾ ഏവ?\n1. പ്രോട്ടോൺ സ്വീകരിക്കുന്നവയാണ് ലൂയിസ് ആസിഡുകൾ.\n2. ഇലക്ട്രോൺ ജോഡിയെ സ്വീകരിക്കുന്നവ ലൂയിസ് ആസിഡുകളും നൽകുന്നവ ലൂയിസ് ബേസുകളുമാണ്.\n3. അമോണിയ (NH3) ഒരു ജോടി ഏകാന്ത ഇലക്ട്രോണുകളെ നൽകാൻ കഴിയുന്നതിനാൽ ലൂയിസ് ബേസിന് ഉദാഹരണമാണ്.", options: ["1, 2 ശരിയാണ്", "1, 3 ശരിയാണ്", "2, 3 ശരിയാണ്", "എല്ലാ പ്രസ്താവനകളും ശരിയാണ്"], ans: 2, exp: "ഒന്നാമത്തെ പ്രസ്താവന തെറ്റാണ്. പ്രോട്ടോൺ സങ്കല്പം ബ്രോൺസ്റ്റഡ്-ലോറിയുടേതാണ്; ലൂയിസ് സങ്കല്പം ഇലക്ട്രോൺ ജോഡിയെ അടിസ്ഥാനമാക്കിയുള്ളതാണ്. 2, 3 ശരിയാണ്." },
+      { q: "pH സ്കെയിലിനെ സംബന്ധിച്ച പ്രസ്താവനകൾ പരിശോധിക്കുക:\n1. 1909-ൽ സോറൻസൺ (S.P.L. Sørensen) ആണ് pH സ്കെയിൽ ആവിഷ്കരിച്ചത്.\n2. pH മൂല്യം 7-ൽ കൂടുതൽ ഉള്ള ലായനികൾ അമ്ലഗുണം (Acidic) കാണിക്കുന്നു.\n3. pH മൂല്യം 7 ആണെങ്കിൽ ലായനി നിർവീര്യവും (Neutral), 7-ൽ താഴെയാണെങ്കിൽ അമ്ലവുമാണ്.", options: ["1, 2 ശരിയാണ്", "1, 3 ശരിയാണ്", "2, 3 ശരിയാണ്", "എല്ലാ പ്രസ്താവനകളും ശരിയാണ്"], ans: 1, exp: "രണ്ടാമത്തെ പ്രസ്താവന തെറ്റാണ്. pH 7-ൽ കൂടുതൽ ഉള്ളവ ക്ഷാരഗുണമുള്ളതാണ് (Basic/Alkaline). 1, 3 ശരിയാണ്." },
+      { q: "ആസിഡുകളുടെ പൊതുവായ രാസഗുണങ്ങളെക്കുറിച്ചുള്ള പ്രസ്താവനകൾ ഏവ:\n1. ആസിഡുകൾ സിങ്ക്, മഗ്നീഷ്യം തുടങ്ങിയ സജീവ ലോഹങ്ങളുമായി പ്രവർത്തിക്കുമ്പോൾ ഹൈഡ്രജൻ വാതകം പുറത്തുവിടുന്നു.\n2. ആസിഡുകൾ ചുവപ്പ് ലിറ്റ്മസിനെ നീലയാക്കി മാറ്റുന്നു.\n3. ആസിഡുകൾ കാർബണേറ്റുകളുമായി പ്രവർത്തിക്കുമ്പോൾ ഓക്സിജൻ വാതകം പുറത്തുവിടുന്നു.", options: ["1 മാത്രം ശരിയാണ്", "2 മാത്രം ശരിയാണ്", "1, 2 ശരിയാണ്", "1, 3 ശരിയാണ്"], ans: 0, exp: "2, 3 പ്രസ്താവനകൾ തെറ്റാണ്. ആസിഡുകൾ നീല ലിറ്റ്മസിനെ ചുവപ്പാക്കുന്നു. കാർബണേറ്റുകളുമായി പ്രവർത്തിക്കുമ്പോൾ കാർബൺ ഡയോക്സൈഡ് (CO2) വാതകമാണ് പുറത്തുവിടുന്നത്. അതിനാൽ 1 മാത്രം ശരി." },
+      { q: "ഹൈഡ്രജൻ ബോംബും ആറ്റം ബോംബും തമ്മിലുള്ള തത്ത്വങ്ങളെക്കുറിച്ചുള്ള പ്രസ്താവനകളിൽ ശരിയായതേത്?\n1. ആറ്റം ബോംബ് പ്രവർത്തിക്കുന്നത് ന്യൂക്ലിയർ ഫ്യൂഷൻ (സംയോജനം) തത്വത്തിലാണ്.\n2. ഹൈഡ്രജൻ ബോംബ് പ്രവർത്തിക്കുന്നത് ന്യൂക്ലിയർ ഫിഷൻ (വിഘടനം) വഴി മാത്രമാണ്.\n3. ആറ്റം ബോംബ് ന്യൂക്ലിയർ ഫിഷൻ (അണുവിഘടനം) അടിസ്ഥാനമാക്കിയും, ഹൈഡ്രജൻ ബോംബ് അനിയന്ത്രിത ന്യൂക്ലിയർ ഫ്യൂഷൻ (അണുസംയോജനം) അടിസ്ഥാനമാക്കിയുമാണ് പ്രവർത്തിക്കുന്നത്.", options: ["1, 2 ശരിയാണ്", "1, 3 ശരിയാണ്", "2, 3 ശരിയാണ്", "3 മാത്രം ശരിയാണ്"], ans: 3, exp: "1, 2 പ്രസ്താവനകൾ തെറ്റാണ്. ആറ്റം ബോംബ് ഫിഷനും, ഹൈഡ്രജൻ ബോംബ് ഫ്യൂഷനുമാണ്. അതിനാൽ 3-ാമത്തെ പ്രസ്താവന മാത്രമാണ് ശരി." },
+      { q: "വാതകങ്ങളുടെ വ്യാപനത്തെക്കുറിച്ചുള്ള (Graham's Law of Diffusion) പ്രസ്താവനകൾ ഏവ?\n1. ഒരു വാതകത്തിന്റെ വ്യാപന നിരക്ക് (Rate of diffusion) അതിന്റെ സാന്ദ്രതയുടെ വർഗ്ഗമൂലത്തിന് വിപരീതാനുപാതത്തിലായിരിക്കും.\n2. ഭാരം കുറഞ്ഞ വാതകങ്ങൾ ഭാരമേറിയ വാതകങ്ങളേക്കാൾ വേഗത്തിൽ അന്തരീക്ഷത്തിൽ വ്യാപിക്കുന്നു.\n3. സാന്ദ്രത കൂടിയ സൾഫർ ഡയോക്സൈഡ് ഹൈഡ്രജനേക്കാൾ വേഗത്തിൽ പടരുന്നു.", options: ["1, 3 ശരിയാണ്", "1, 2 ശരിയാണ്", "2, 3 ശരിയാണ്", "എല്ലാ പ്രസ്താവനകളും ശരിയാണ്"], ans: 1, exp: "മൂന്നാമത്തെ പ്രസ്താവന തെറ്റാണ്. ഗ്രഹാമിന്റെ നിയമപ്രകാരം തന്മാത്രാ ഭാരം കുറഞ്ഞ ഹൈഡ്രജൻ ആണ് വേഗത്തിൽ വ്യാപിക്കുന്നത്. 1, 2 ശരിയാണ്." },
+      { q: "ആൽക്കലികളെക്കുറിച്ചുള്ള (Alkalis) പ്രസ്താവനകൾ പരിശോധിക്കുക:\n1. ജലത്തിൽ ലയിക്കുന്ന ബേസുകളെയാണ് ആൽക്കലികൾ എന്ന് വിളിക്കുന്നത്.\n2. സോഡിയം ഹൈഡ്രോക്സൈഡ് (NaOH), പൊട്ടാസ്യം ഹൈഡ്രോക്സൈഡ് (KOH) എന്നിവ ശക്തമായ ആൽക്കലികൾക്ക് ഉദാഹരണമാണ്.\n3. എല്ലാ ആൽക്കലികളും ബേസുകളാണ്, എന്നാൽ എല്ലാ ബേസുകളും ആൽക്കലികളല്ല.", options: ["1, 2 ശരിയാണ്", "2, 3 ശരിയാണ്", "1, 3 ശരിയാണ്", "1, 2, 3 പ്രസ്താവനകളും ശരിയാണ്"], ans: 3, exp: "ആൽക്കലികളുടെ നിർവ്വചനം, സ്വഭാവം, പ്രസിദ്ധമായ ആപ്തവാക്യം എന്നിവ വ്യക്തമാക്കുന്ന മൂന്ന് പ്രസ്താവനകളും ശരിയാണ്." },
+      { q: "ക്വാണ്ടം സംഖ്യകളെക്കുറിച്ചുള്ള (Quantum Numbers) പ്രസ്താവനകൾ ഏവ?\n1. പ്രിൻസിപ്പൽ ക്വാണ്ടം സംഖ്യ (n) ഷെല്ലിന്റെ വലിപ്പത്തെയും പ്രധാന ഊർജ്ജനിലയെയും സൂചിപ്പിക്കുന്നു.\n2. അസിമുത്തൽ ക്വാണ്ടം സംഖ്യ (l) സബ്ഷെല്ലിന്റെ ആകൃതിയെ (s, p, d, f) നിർണ്ണയിക്കുന്നു.\n3. സ്പിൻ ക്വാണ്ടം സംഖ്യ ന്യൂക്ലിയസിന്റെ ഭ്രമണ ദിശയെയാണ് കാണിക്കുന്നത്.", options: ["1, 2 ശരിയാണ്", "2, 3 ശരിയാണ്", "1, 3 ശരിയാണ്", "എല്ലാ പ്രസ്താവനകളും ശരിയാണ്"], ans: 0, exp: "മൂന്നാമത്തെ പ്രസ്താവന തെറ്റാണ്. സ്പിൻ ക്വാണ്ടം നമ്പർ (+1/2, -1/2) ഇലക്ട്രോണിന്റെ സ്വന്തം അച്ചുതണ്ടിലുള്ള കറക്കത്തെയാണ് സൂചിപ്പിക്കുന്നത് (ന്യൂക്ലിയസിന്റേതല്ല). 1, 2 ശരിയാണ്." },
+      { q: "പൗളിയുടെ അപവർജ്ജന നിയമത്തെക്കുറിച്ചും (Pauli's Exclusion Principle) ഹുണ്ടിന്റെ നിയമത്തെക്കുറിച്ചുമുള്ള പ്രസ്താവനകൾ ഏവ?\n1. ഒരു ഓർബിറ്റലിൽ ഒരേ സ്പിന്നോടുകൂടിയ 4 ഇലക്ട്രോണുകളെ വരെ ഉൾക്കൊള്ളിക്കാം.\n2. ഒരു ആറ്റത്തിലെ രണ്ട് ഇലക്ട്രോണുകൾക്ക് 4 ക്വാണ്ടം സംഖ്യകളും ഒരിക്കലും ഒരേപോലെയായിരിക്കില്ല.\n3. ഒരേ ഊർജ്ജമുള്ള ഡീജനറേറ്റ് ഓർബിറ്റലുകളിൽ ഓരോ ഇലക്ട്രോൺ വീതം പ്രവേശിച്ച ശേഷമേ ജോഡിയാകൽ (Pairing) നടക്കൂ എന്ന് ഹുണ്ടിന്റെ നിയമം പറയുന്നു.", options: ["1, 2 ശരിയാണ്", "1, 3 ശരിയാണ്", "2, 3 ശരിയാണ്", "എല്ലാ പ്രസ്താവനകളും ശരിയാണ്"], ans: 2, exp: "ഒന്നാമത്തെ പ്രസ്താവന തെറ്റാണ്. പൗളിയുടെ നിയമപ്രകാരം ഒരു ഓർബിറ്റലിൽ വിപരീത സ്പിന്നോടുകൂടിയ 2 ഇലക്ട്രോണുകളെ മാത്രമേ ഉൾക്കൊള്ളിക്കാനാവൂ. 2, 3 ശരിയാണ്." },
+      { q: "ഡീബ്രോളിയുടെ ദ്വൈത സ്വഭാവത്തെയും ഹൈസൻബർഗിന്റെ അനിശ്ചിതത്വ തത്വത്തെയും സംബന്ധിച്ച പ്രസ്താവനകൾ ഏവ?\n1. ചലിക്കുന്ന സൂക്ഷ്മ കണികകൾക്ക് ഒരേസമയം കണികാ സ്വഭാവവും തരംഗ സ്വഭാവവും ഉണ്ടായിരിക്കും എന്ന് ഡീബ്രോളി സമർത്ഥിച്ചു.\n2. ഒരു ഇലക്ട്രോണിന്റെ കൃത്യമായ സ്ഥാനവും സംവേഗവും ഒരേസമയം തെറ്റുകൂടാതെ കൃത്യമായി അളക്കാൻ സാധിക്കുമെന്ന് ഹൈസൻബർഗ് തെളിയിച്ചു.\n3. ഒരു വസ്തുവിന്റെ സ്ഥാനവും സംവേഗവും ഒരേസമയം കൃത്യതയോടെ അളക്കാൻ കഴിയില്ല എന്നതാണ് ഹൈസൻബർഗിന്റെ അനിശ്ചിതത്വ തത്വം.", options: ["1, 2 ശരിയാണ്", "1, 3 ശരിയാണ്", "2, 3 ശരിയാണ്", "എല്ലാ പ്രസ്താവനകളും ശരിയാണ്"], ans: 1, exp: "രണ്ടാമത്തെ പ്രസ്താവന തെറ്റാണ്. സ്ഥാനവും സംവേഗവും ഒരേസമയം അളക്കാൻ കഴിയില്ല എന്നാണ് ഹൈസൻബർഗ് സമർത്ഥിച്ചത് (Δx . Δp ≥ h/4π). 1, 3 ശരിയാണ്." },
+      { q: "റേഡിയോ ആക്ടീവ് വികിരണങ്ങളെക്കുറിച്ചുള്ള പ്രസ്താവനകൾ പരിശോധിക്കുക:\n1. ആൽഫാ കണങ്ങൾ പോസിറ്റീവ് ചാർജ്ജുള്ള ഹീലിയം ന്യൂക്ലിയസുകളാണ് (2He4).\n2. ബീറ്റാ കണങ്ങൾ പ്രകാശത്തേക്കാൾ വേഗതയുള്ള ഹൈഡ്രജൻ കണങ്ങളാണ്.\n3. ഗാമാ രശ്മികൾ ചാർജ്ജുള്ള കണികകളായതിനാൽ കാന്തിക മണ്ഡലത്തിൽ ശക്തമായി വ്യതിചലിക്കുന്നു.", options: ["1 മാത്രം ശരിയാണ്", "2 മാത്രം ശരിയാണ്", "1, 2 ശരിയാണ്", "1, 3 ശരിയാണ്"], ans: 0, exp: "2, 3 പ്രസ്താവനകൾ തെറ്റാണ്. ബീറ്റാ കണങ്ങൾ അതിവേഗ ഇലക്ട്രോണുകളാണ്. ഗാമാ രശ്മികൾ ചാർജ്ജില്ലാത്ത വൈദ്യുതകാന്തിക തരംഗങ്ങളായതിനാൽ കാന്തികമണ്ഡലത്തിൽ വ്യതിചലിക്കില്ല. അതിനാൽ 1 മാത്രം ശരി." },
+      { q: "മെൻഡലീവിന്റെ പീരിയോഡിക് ടേബിളിന്റെ നേട്ടങ്ങളെ സംബന്ധിച്ച പ്രസ്താവനകൾ ഏവ?\n1. അക്കാലത്ത് കണ്ടുപിടിക്കപ്പെടാത്ത മൂലകങ്ങൾക്കായി പീരിയോഡിക് ടേബിളിൽ മെൻഡലീവ് വിടവുകൾ ഒഴിച്ചിട്ടു.\n2. ഏകാ-അലുമിനിയം എന്ന് മെൻഡലീവ് പ്രവചിച്ച മൂലകം പിൽക്കാലത്ത് 'ഗാലിയം' (Gallium) എന്ന പേരിൽ കണ്ടെത്തപ്പെട്ടു.\n3. അറ്റോമിക നമ്പർ അടിസ്ഥാനമാക്കിയാണ് മെൻഡലീവ് പട്ടിക തയ്യാറാക്കിയത്.", options: ["1, 3 ശരിയാണ്", "1, 2 ശരിയാണ്", "2, 3 ശരിയാണ്", "എല്ലാ പ്രസ്താവനകളും ശരിയാണ്"], ans: 1, exp: "മൂന്നാമത്തെ പ്രസ്താവന തെറ്റാണ്. മെൻഡലീവ് അറ്റോമിക ഭാരം (Atomic Mass) അടിസ്ഥാനമാക്കിയാണ് പട്ടിക നിർമ്മിച്ചത്. അറ്റോമിക നമ്പർ കൊണ്ടുവന്നത് മോസ്ലിയാണ്. 1, 2 ശരിയാണ്." },
+      { q: "ആസിഡ് മഴയെക്കുറിച്ചുള്ള (Acid Rain) പ്രസ്താവനകൾ ഏവ?\n1. മഴവെള്ളത്തിന്റെ pH മൂല്യം 10-ൽ കൂടുമ്പോഴാണ് അതിനെ ആസിഡ് മഴ എന്ന് വിളിക്കുന്നത്.\n2. അന്തരീക്ഷത്തിലെ സൾഫർ ഡയോക്സൈഡ് (SO2), നൈട്രജൻ ഓക്സൈഡുകൾ (NOx) എന്നിവ മഴവെള്ളത്തിൽ ലയിക്കുമ്പോഴാണ് ആസിഡ് മഴ ഉണ്ടാകുന്നത്.\n3. ആസിഡ് മഴ മാർബിൾ സ്മാരകങ്ങളെ ദ്രവിപ്പിക്കുകയും (Stone Leprosy) ജലാശയങ്ങളെ മലിനമാക്കുകയും ചെയ്യുന്നു.", options: ["1, 2 ശരിയാണ്", "1, 3 ശരിയാണ്", "2, 3 ശരിയാണ്", "എല്ലാ പ്രസ്താവനകളും ശരിയാണ്"], ans: 2, exp: "ഒന്നാമത്തെ പ്രസ്താവന തെറ്റാണ്. മഴവെള്ളത്തിന്റെ pH മൂല്യം 5.6-ൽ താഴെ പോകുമ്പോഴാണ് ആസിഡ് മഴ എന്ന് വിളിക്കുന്നത്. 2, 3 ശരിയാണ്." },
+      { q: "ലായനികളുടെ ഗാഢത വ്യക്തമാക്കുന്ന മൊളാരിറ്റിയെയും മൊളാലിറ്റിയെയും സംബന്ധിച്ച പ്രസ്താവനകൾ ഏവ?\n1. ഒരു ലിറ്റർ ലായനിയിൽ അടങ്ങിയിരിക്കുന്ന ലീനത്തിന്റെ മോളുകളുടെ എണ്ണമാണ് മൊളാരിറ്റി (Molarity).\n2. ഒരു കിലോഗ്രാം ലായകത്തിൽ അടങ്ങിയിരിക്കുന്ന ലീനത്തിന്റെ മോളുകളുടെ എണ്ണമാണ് മൊളാലിറ്റി (Molality).\n3. മൊളാരിറ്റി താപനിലയ്ക്കനുസരിച്ച് മാറ്റമില്ലാതെ നിലനിൽക്കുന്നു.", options: ["1, 2 ശരിയാണ്", "2, 3 ശരിയാണ്", "1, 3 ശരിയാണ്", "എല്ലാ പ്രസ്താവനകളും ശരിയാണ്"], ans: 0, exp: "മൂന്നാമത്തെ പ്രസ്താവന തെറ്റാണ്. വ്യാപ്തത്തെ ആശ്രയിക്കുന്നതിനാൽ മൊളാരിറ്റി താപനില മാറുമ്പോൾ വ്യത്യാസപ്പെടുന്നു; എന്നാൽ മാസിനെ ആശ്രയിക്കുന്ന മൊളാലിറ്റിയാണ് താപനിലയെ ആശ്രയിക്കാത്തത്. 1, 2 ശരിയാണ്." },
+      { q: "ഐസോടോപ്പുകളെയും ഐസോബാറുകളെയും കുറിച്ചുള്ള പ്രസ്താവനകളിൽ ശരിയായതേത്?\n1. ഒരേ മാസ് നമ്പറും വ്യത്യസ്ത അറ്റോമിക നമ്പറുമുള്ള ആറ്റങ്ങളാണ് ഐസോടോപ്പുകൾ.\n2. ഒരേ അറ്റോമിക നമ്പറും വ്യത്യസ്ത മാസ് നമ്പറുമുള്ളവയാണ് ഐസോബാറുകൾ.\n3. ഒരേ അറ്റോമിക നമ്പറും വ്യത്യസ്ത മാസ് നമ്പറുമുള്ള ഒരേ മൂലകത്തിന്റെ ആറ്റങ്ങളാണ് ഐസോടോപ്പുകൾ (ഉദാ: കാർബണ-12, കാർബൺ-14).", options: ["1, 2 ശരിയാണ്", "1, 3 ശരിയാണ്", "2, 3 ശരിയാണ്", "3 മാത്രം ശരിയാണ്"], ans: 3, exp: "1, 2 പ്രസ്താവനകൾ തിരിഞ്ഞു നൽകിയിരിക്കുന്നു. ഒരേ അറ്റോമിക നമ്പറുള്ളവ ഐസോടോപ്പും, ഒരേ മാസ് നമ്പറുള്ള വ്യത്യസ്ത മൂലകങ്ങൾ ഐസോബാറുകളുമാണ്. അതിനാൽ 3-ാം പ്രസ്താവന മാത്രം ശരി." },
+      { q: "ആൽക്കഹോളും ഈതറും പോലുള്ള ഓർഗാനിക് ലായകങ്ങളെ സംബന്ധിച്ച പ്രസ്താവനകൾ ഏവ?\n1. ജലത്തിൽ ലയിക്കാത്ത എണ്ണ, കൊഴുപ്പ്, പെയിന്റ് എന്നിവ അലിയിക്കാൻ ഓർഗാനിക് ലായകങ്ങൾക്ക് സാധിക്കുന്നു.\n2. ജലത്തെ ഒരു കാർബണിക (Organic) ലായകം എന്നാണ് ശാസ്ത്രം വിശേഷിപ്പിക്കുന്നത്.\n3. ബെൻസീൻ, കാർബൺ ടെട്രാക്ലോറൈഡ്, അസറ്റോൺ എന്നിവ മികച്ച ജൈവ ലായകങ്ങളാണ്.", options: ["1, 2 ശരിയാണ്", "1, 3 ശരിയാണ്", "2, 3 ശരിയാണ്", "എല്ലാ പ്രസ്താവനകളും ശരിയാണ്"], ans: 1, exp: "രണ്ടാമത്തെ പ്രസ്താവന തെറ്റാണ്. ജലം അകാർബണികമായ സാർവ്വത്രിക ലായകമാണ് (Universal inorganic solvent). 1, 3 ശരിയാണ്." },
+      { q: "f-ബ്ലോക്ക് മൂലകങ്ങളെക്കുറിച്ചുള്ള പ്രസ്താവനകൾ ഏവ?\n1. ലാന്തനോയിഡുകൾ, ആക്ടിനോയിഡുകൾ എന്നിങ്ങനെ രണ്ട് ശ്രേണികളായാണ് f-ബ്ലോക്ക് മൂലകങ്ങൾ ഉള്ളത്.\n2. ഇവ പീരിയോഡിക് ടേബിളിന്റെ താഴെയായി രണ്ട് വരികളിലായി ക്രമീകരിച്ചിരിക്കുന്നു.\n3. എല്ലാ f-ബ്ലോക്ക് മൂലകങ്ങളും ദ്രാവക രൂപത്തിൽ മാത്രമേ പ്രകൃതിയിൽ കാണപ്പെടുന്നുള്ളൂ.", options: ["1, 2 ശരിയാണ്", "2, 3 ശരിയാണ്", "1, 3 ശരിയാണ്", "എല്ലാ പ്രസ്താവനകളും ശരിയാണ്"], ans: 0, exp: "മൂന്നാമത്തെ പ്രസ്താവന തെറ്റാണ്. f-ബ്ലോക്ക് മൂലകങ്ങൾ അപൂർവ്വ ഭൗമ ലോഹങ്ങളും ഭൂരിഭാഗവും ഖരരൂപത്തിലുള്ളവയും റേഡിയോ ആക്ടീവുമായവയാണ്. 1, 2 ശരിയാണ്." },
+      { q: "ബഫർ ലായനികളെ (Buffer Solutions) സംബന്ധിച്ച പ്രസ്താവനകൾ ഏവ?\n1. അല്പം ആസിഡോ ബേസോ ചേർത്താൽ ഉടനടി pH മൂല്യത്തിൽ ഭീമമായ വ്യതിയാനം സംഭവിക്കുന്നവയാണ് ബഫറുകൾ.\n2. അല്പം ആസിഡോ ബേസോ ചേർത്താലും സ്വന്തം pH മൂല്യത്തിൽ മാറ്റമുണ്ടാകാതെ സ്ഥിരമായി നിലനിർത്താൻ കഴിയുന്നവയാണ് ബഫർ ലായനികൾ.\n3. മനുഷ്യരക്തം ഒരു സ്വാഭാവിക ബഫർ ലായനിയാണ് (pH ഏകദേശം 7.4 ആയി നിലനിർത്തുന്നു).", options: ["1, 2 ശരിയാണ്", "1, 3 ശരിയാണ്", "2, 3 ശരിയാണ്", "എല്ലാ പ്രസ്താവനകളും ശരിയാണ്"], ans: 2, exp: "ഒന്നാമത്തെ പ്രസ്താവന തെറ്റാണ്. pH മാറ്റത്തെ ചെറുക്കുന്ന ലായനികളാണ് ബഫറുകൾ. രക്തം ബഫറിന് മികച്ച ഉദാഹരണമാണ്. 2, 3 ശരിയാണ്." },
+      { q: "വാട്ടർ ഗ്യാസ്, പ്രൊഡ്യൂസർ ഗ്യാസ് എന്നിവയെ സംബന്ധിച്ച പ്രസ്താവനകൾ ഏവ:\n1. കാർബൺ മോണോക്സൈഡും ഹൈഡ്രജനും ചേർന്ന മിശ്രിതമാണ് വാട്ടർ ഗ്യാസ് (CO + H2).\n2. കാർബൺ ഡയോക്സൈഡും മീഥെയ്നും ചേർന്ന മിശ്രിതമാണ് വാട്ടർ ഗ്യാസ്.\n3. പ്രൊഡ്യൂസർ ഗ്യാസിൽ ഓക്സിജൻ വാതകം മാത്രമാണുള്ളത്.", options: ["1 മാത്രം ശരിയാണ്", "2 മാത്രം ശരിയാണ്", "1, 2 ശരിയാണ്", "1, 3 ശരിയാണ്"], ans: 0, exp: "2, 3 പ്രസ്താവനകൾ തെറ്റാണ്. വാട്ടർ ഗ്യാസ് എന്നാൽ CO + H2 ആണ്. പ്രൊഡ്യൂസർ ഗ്യാസ് എന്നാൽ CO + N2 ആണ്. അതിനാൽ 1 മാത്രം ശരി." },
+      { q: "ദ്രാവകങ്ങൾ തിളയ്ക്കുന്ന പ്രതിഭാസത്തെയും ബാഷ്പീകരണത്തെയും സംബന്ധിച്ച പ്രസ്താവനകൾ ഏവ?\n1. ഒരു ദ്രാവകത്തിന്റെ ബാഷ്പമർദ്ദം അന്തരീക്ഷമർദ്ദത്തിന് തുല്യമാകുന്ന താപനിലയാണ് തിളനില (Boiling Point).\n2. അന്തരീക്ഷമർദ്ദം കുറയുമ്പോൾ (ഉയർന്ന മലമുകളിൽ) ദ്രാവകങ്ങളുടെ തിളനില കുറയുന്നു.\n3. പ്രഷർ കുക്കറിനുള്ളിൽ ഉയർന്ന മർദ്ദമുള്ളതിനാൽ ജലം 50 ഡിഗ്രിയിൽ തിളയ്ക്കുന്നു.", options: ["1, 3 ശരിയാണ്", "1, 2 ശരിയാണ്", "2, 3 ശരിയാണ്", "എല്ലാ പ്രസ്താവനകളും ശരിയാണ്"], ans: 1, exp: "മൂന്നാമത്തെ പ്രസ്താവന തെറ്റാണ്. പ്രഷർ കുക്കറിൽ മർദ്ദം കൂടുമ്പോൾ ജലത്തിന്റെ തിളനില 100°C-ൽ നിന്നും 120°C വരെയായി വർദ്ധിക്കുകയാണ് ചെയ്യുന്നത്, അതിനാൽ ഭക്ഷണം വേഗം വേവുന്നു. 1, 2 ശരിയാണ്." },
+      { q: "രസതന്ത്രത്തിലെ ആറ്റോമിക സിദ്ധാന്തങ്ങളുടെയും പീരിയോഡിക് ടേബിളിന്റെയും ആകെത്തുകയെക്കുറിച്ചുള്ള പ്രസ്താവനകൾ ഏവ?\n1. ആറ്റത്തിന്റെ ഇലക്ട്രോൺ വിന്യാസമാണ് മൂലകങ്ങളുടെ രാസസ്വഭാവങ്ങളെയും സംയോജകതയെയും (Valency) നിർണ്ണയിക്കുന്നത്.\n2. പീരിയോഡിക് ടേബിളിലൂടെ മൂലകങ്ങളുടെ സവിശേഷതകൾ ശാസ്ത്രീയമായി പ്രവചിക്കാനും പഠിക്കാനും സാധിക്കുന്നു.\n3. അയോണീകരണ ഊർജ്ജം, ഇലക്ട്രോനെഗറ്റിവിറ്റി, അറ്റോമിക ആരം എന്നിവ പരസ്പര പൂരകങ്ങളായ ആവർത്തന ഗുണങ്ങളാണ്.", options: ["1, 2 ശരിയാണ്", "2, 3 ശരിയാണ്", "1, 3 ശരിയാണ്", "1, 2, 3 പ്രസ്താവനകളും ശരിയാണ്"], ans: 3, exp: "ആറ്റോമിക സിദ്ധാന്തങ്ങളുടെയും ആവർത്തനപ്പട്ടികയുടെയും മൗലിക പ്രാധാന്യം വ്യക്തമാക്കുന്ന മൂന്ന് പ്രസ്താവനകളും ശരിയാണ്." }
     ];
 
-    let currentUser = null;
+    let currentUser = { name: "പരീക്ഷാർത്ഥി", phone: "0000000000" };
     let currentIndex = 0;
     let userAnswers = new Array(questionsData.length).fill(null);
-
-    // 50 Minutes Countdown Timer (50 * 60 seconds)
     let timeLeft = 50 * 60;
     let timerInterval = null;
 
-    const loginCard = document.getElementById('loginCard');
-    const quizScreen = document.getElementById('quizScreen');
-    const resultScreen = document.getElementById('resultScreen');
+    window.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const passedName = urlParams.get('name');
+      const passedPhone = urlParams.get('phone');
+      const passedTitle = urlParams.get('title');
+      const passedSheet = urlParams.get('sheetUrl');
+      const passedPdf = urlParams.get('pdfUrl');
+
+      if (passedName) currentUser.name = decodeURIComponent(passedName);
+      if (passedPhone) currentUser.phone = decodeURIComponent(passedPhone);
+      if (passedTitle) {
+        examTitle = decodeURIComponent(passedTitle);
+        document.getElementById('headerExamTitle').innerText = examTitle;
+        document.getElementById('solutionsTitleDisplay').innerText = `${examTitle} - സമഗ്ര ഉത്തര സൂചിക`;
+      }
+      if (passedSheet) GOOGLE_SHEET_WEBAPP_URL = decodeURIComponent(passedSheet);
+      if (passedPdf) ORIGINAL_PDF_URL = decodeURIComponent(passedPdf);
+
+      document.getElementById('displayUser').innerText = `${currentUser.name} (+91 ${currentUser.phone})`;
+
+      buildPalette();
+      renderQuestion(0);
+      startTimer();
+    });
 
     function startTimer() {
       const timerDisplay = document.getElementById('examTimer');
@@ -310,13 +284,10 @@
         timeLeft--;
         const minutes = Math.floor(timeLeft / 60);
         const seconds = timeLeft % 60;
-
-        const mStr = minutes < 10 ? '0' + minutes : minutes;
-        const sStr = seconds < 10 ? '0' + seconds : seconds;
-        timerDisplay.innerText = `${mStr}:${sStr}`;
+        timerDisplay.innerText = `${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
 
         if (timeLeft <= 300) {
-          timerDisplay.classList.remove('text-cyan-400');
+          timerDisplay.classList.remove('text-violet-400');
           timerDisplay.classList.add('text-rose-500', 'animate-pulse');
         }
       }, 1000);
@@ -325,6 +296,7 @@
     function renderQuestion(index) {
       const q = questionsData[index];
       document.getElementById('questionBadge').innerText = `ചോദ്യം ${index + 1} / ${questionsData.length}`;
+      document.getElementById('answeredCountTxt').innerText = `പൂർത്തിയാക്കിയത്: ${userAnswers.filter(a => a !== null).length}/${questionsData.length}`;
       document.getElementById('qText').innerText = `${index + 1}. ${q.q}`;
 
       const optionsDiv = document.getElementById('optionsContainer');
@@ -337,12 +309,12 @@
         btn.type = 'button';
         btn.className = `w-full text-left p-4 rounded-xl border transition flex items-start space-x-3 ${
           isSelected 
-            ? 'bg-cyan-500/20 border-cyan-500 text-cyan-200 ring-1 ring-cyan-500' 
+            ? 'bg-violet-500/20 border-violet-500 text-violet-200 ring-1 ring-violet-500' 
             : 'bg-slate-900/60 border-slate-700 hover:bg-slate-700/50 text-slate-200'
         }`;
         btn.innerHTML = `
           <span class="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold ${
-            isSelected ? 'bg-cyan-500 text-slate-950 font-black' : 'bg-slate-800 text-slate-400'
+            isSelected ? 'bg-violet-500 text-white font-black' : 'bg-slate-800 text-slate-400'
           }">${letters[idx]}</span>
           <span class="text-sm sm:text-base leading-relaxed mt-0.5">${opt}</span>
         `;
@@ -355,8 +327,6 @@
 
       document.getElementById('prevBtn').disabled = (index === 0);
       document.getElementById('nextBtn').innerText = (index === questionsData.length - 1) ? "സബ്മിറ്റ് ചെയ്യുക ✓" : "Next ›";
-      const answered = userAnswers.filter(a => a !== null).length;
-      document.getElementById('answeredCountTxt').innerText = `പൂർത്തിയാക്കിയത്: ${answered}/${questionsData.length}`;
       updatePalette();
     }
 
@@ -365,6 +335,7 @@
       pal.innerHTML = '';
       for (let i = 0; i < questionsData.length; i++) {
         const b = document.createElement('button');
+        b.type = 'button';
         b.id = `pal-${i}`;
         b.innerText = i + 1;
         b.className = 'w-7 h-7 rounded text-[11px] font-bold flex items-center justify-center border transition';
@@ -379,7 +350,7 @@
         const b = document.getElementById(`pal-${i}`);
         if (!b) continue;
         if (i === currentIndex) {
-          b.className = 'w-7 h-7 rounded text-[11px] font-black border border-cyan-400 bg-cyan-400 text-slate-950';
+          b.className = 'w-7 h-7 rounded text-[11px] font-black border border-violet-400 bg-violet-400 text-slate-950';
         } else if (userAnswers[i] !== null) {
           b.className = 'w-7 h-7 rounded text-[11px] font-semibold border border-emerald-500/50 bg-emerald-950/60 text-emerald-400';
         } else {
@@ -440,25 +411,57 @@
       document.getElementById('resultCandidateInfo').innerText = `പരീക്ഷാർത്ഥി: ${currentUser.name} | മൊബൈൽ: ${currentUser.phone}`;
       document.getElementById('pdfReportCandidateSubheader').innerText = `പരീക്ഷാർത്ഥി: ${currentUser.name} (${currentUser.phone}) | സ്കോർ: ${formattedScore} / 50 | ശരി: ${correct} | തെറ്റ്: ${wrong} | Skip: ${skipped}`;
 
-      // 15 Marks Minimum Condition for Original PDF Download
+      // Motivation Badge
+      const badge = document.getElementById('scoreMotivationBadge');
+      if (scoreNum >= 35) {
+        badge.className = "max-w-xl mx-auto p-4 rounded-2xl border border-emerald-500/60 bg-emerald-950/40 text-emerald-300";
+        badge.innerHTML = `🏆 <strong>അത്യുജ്ജ്വല പ്രകടനം!</strong> രസതന്ത്രത്തിൽ നിങ്ങൾ മികച്ച നിലവാരം പുലർത്തുന്നുണ്ട്.`;
+      } else if (scoreNum >= 25) {
+        badge.className = "max-w-xl mx-auto p-4 rounded-2xl border border-emerald-500/60 bg-emerald-950/40 text-emerald-300";
+        badge.innerHTML = `👏 <strong>മികച്ച മുന്നേറ്റം!</strong> ലക്ഷ്യത്തിലേക്ക് വളരെ അടുത്താണ്. ചെറിയ തിരുത്തലുകൾ വരുത്തിയാൽ ടോപ്പിലെത്താം.`;
+      } else if (scoreNum >= 15) {
+        badge.className = "max-w-xl mx-auto p-4 rounded-2xl border border-amber-500/60 bg-amber-950/40 text-amber-300";
+        badge.innerHTML = `💡 <strong>നല്ല ശ്രമം!</strong> നോട്ടുകൾ ഒന്നുകൂടി റിവിഷൻ ചെയ്താൽ സ്കോർ എളുപ്പം ഉയർത്താം.`;
+      } else {
+        badge.className = "max-w-xl mx-auto p-4 rounded-2xl border border-rose-500/60 bg-rose-950/40 text-rose-300";
+        badge.innerHTML = `🌱 <strong>പരിശ്രമം തുടരുക!</strong> നോട്ടുകൾ വീണ്ടും വായിച്ച് ആത്മവിശ്വാസത്തോടെ അടുത്ത തവണ ശ്രമിക്കുക.`;
+      }
+
+      try {
+        if (currentUser && currentUser.phone && currentUser.phone !== "0000000000") {
+          const historyKey = `sk_history_${currentUser.phone}`;
+          let history = JSON.parse(localStorage.getItem(historyKey) || '[]');
+          history.push({
+            title: examTitle || "രസതന്ത്രം (Chemistry Part 1)",
+            score: formattedScore,
+            correct: correct,
+            wrong: wrong,
+            skipped: skipped,
+            date: new Date().toLocaleDateString('ml-IN', { day: 'numeric', month: 'short', year: 'numeric' })
+          });
+          localStorage.setItem(historyKey, JSON.stringify(history));
+        }
+      } catch (err) {}
+
       const downloadBtn = document.getElementById('originalPdfDownloadLink');
       const lockNotice = document.getElementById('pdfLockNotice');
 
-      if (scoreNum >= 15.0) {
+      if (scoreNum >= 15.0 && ORIGINAL_PDF_URL) {
         downloadBtn.href = ORIGINAL_PDF_URL;
         downloadBtn.classList.remove('hidden');
         lockNotice.classList.add('hidden');
       } else {
         downloadBtn.classList.add('hidden');
-        lockNotice.classList.remove('hidden');
+        if (ORIGINAL_PDF_URL) lockNotice.classList.remove('hidden');
       }
 
       renderSolutions();
-      quizScreen.classList.add('hidden');
-      resultScreen.classList.remove('hidden');
+      setupClickableReviewCards();
+
+      document.getElementById('quizScreen').classList.add('hidden');
+      document.getElementById('resultScreen').classList.remove('hidden');
       window.scrollTo({ top: 0, behavior: 'smooth' });
 
-      // Save to Google Sheets (Targeting Specific Tab: Physics_Set1)
       sendResultToGoogleSheet({
         name: currentUser.name,
         phone: currentUser.phone,
@@ -469,6 +472,91 @@
       });
     }
 
+    function setupClickableReviewCards() {
+      document.getElementById('filterCorrectCard').onclick = () => renderFilteredQuestions('correct');
+      document.getElementById('filterWrongCard').onclick = () => renderFilteredQuestions('wrong');
+      document.getElementById('filterSkippedCard').onclick = () => renderFilteredQuestions('skipped');
+    }
+
+    function renderFilteredQuestions(type) {
+      const area = document.getElementById('filterReviewArea');
+      const title = document.getElementById('filterReviewTitle');
+      const list = document.getElementById('filterReviewList');
+      const letters = ['A', 'B', 'C', 'D'];
+
+      list.innerHTML = '';
+      area.classList.remove('hidden');
+
+      if (type === 'correct') {
+        title.innerHTML = `✅ നിങ്ങൾ ശരിയാക്കിയ ചോദ്യങ്ങൾ (Correct Answers)`;
+        title.className = "text-lg font-bold text-emerald-400";
+      } else if (type === 'wrong') {
+        title.innerHTML = `❌ നിങ്ങൾക്ക് തെറ്റിയ ചോദ്യങ്ങൾ (Wrong Answers)`;
+        title.className = "text-lg font-bold text-rose-400";
+      } else {
+        title.innerHTML = `⏭️ നിങ്ങൾ ഒഴിവാക്കിയ ചോദ്യങ്ങൾ (Skipped Questions)`;
+        title.className = "text-lg font-bold text-slate-300";
+      }
+
+      let count = 0;
+      questionsData.forEach((q, idx) => {
+        const uAns = userAnswers[idx];
+        const isCorrect = uAns === q.ans;
+        const isWrong = uAns !== null && !isCorrect;
+        const isSkipped = uAns === null;
+
+        if ((type === 'correct' && isCorrect) || (type === 'wrong' && isWrong) || (type === 'skipped' && isSkipped)) {
+          count++;
+          const card = document.createElement('div');
+          card.className = "p-4 rounded-xl border border-slate-700 bg-slate-900/90 space-y-2 text-xs sm:text-sm";
+          
+          let optsMarkup = '<div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2">';
+          q.options.forEach((opt, oIdx) => {
+            let optClass = 'p-2 rounded-lg border flex items-center space-x-2 text-xs ';
+            if (oIdx === q.ans) {
+              optClass += 'border-emerald-500 bg-emerald-950/40 text-emerald-300 font-semibold';
+            } else if (oIdx === uAns && !isCorrect) {
+              optClass += 'border-rose-500 bg-rose-950/40 text-rose-300 line-through';
+            } else {
+              optClass += 'border-slate-800 text-slate-400';
+            }
+            optsMarkup += `<div class="${optClass}"><span>${letters[oIdx]})</span><span>${opt}</span></div>`;
+          });
+          optsMarkup += '</div>';
+
+          let statusBadge = isCorrect 
+            ? '<span class="text-emerald-400 font-bold">+1.00 Mark</span>' 
+            : isWrong 
+            ? '<span class="text-rose-400 font-bold">-0.33 Mark</span>' 
+            : '<span class="text-slate-400 font-bold">Skipped (0 Mark)</span>';
+
+          card.innerHTML = `
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-violet-400">ചോദ്യം ${idx + 1}</span>
+              <div>${statusBadge}</div>
+            </div>
+            <p class="text-slate-200 font-medium">${q.q}</p>
+            ${optsMarkup}
+            <div class="bg-slate-800 p-2.5 rounded-lg border border-slate-700 mt-2 text-xs leading-relaxed">
+              <span class="font-bold text-violet-300">വിശദീകരണം:</span>
+              <span class="text-slate-300 ml-1">${q.exp}</span>
+            </div>
+          `;
+          list.appendChild(card);
+        }
+      });
+
+      if (count === 0) {
+        list.innerHTML = `<p class="py-4 text-center text-slate-400 text-xs">ഈ വിഭാഗത്തിൽ ചോദ്യങ്ങൾ ഒന്നുമില്ല.</p>`;
+      }
+
+      area.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    document.getElementById('closeFilterReviewBtn').onclick = () => {
+      document.getElementById('filterReviewArea').classList.add('hidden');
+    };
+
     function sendResultToGoogleSheet(payload) {
       const statusDiv = document.getElementById('sheetStatus');
       if (!GOOGLE_SHEET_WEBAPP_URL || GOOGLE_SHEET_WEBAPP_URL.includes("YOUR_APPS_SCRIPT_WEBAPP_URL_HERE")) {
@@ -477,8 +565,6 @@
         return;
       }
 
-      payload.sheetName = QUIZ_SHEET_NAME;
-
       fetch(GOOGLE_SHEET_WEBAPP_URL, {
         method: 'POST',
         mode: 'no-cors',
@@ -486,12 +572,12 @@
         body: JSON.stringify(payload)
       })
       .then(() => {
-        statusDiv.innerText = `✓ മാർക്ക് '${QUIZ_SHEET_NAME}' എന്ന ഷീറ്റ് ടാബിലേക്ക് രേഖപ്പെടുത്തി!`;
-        statusDiv.className = "text-xs text-cyan-400 mb-4";
+        statusDiv.innerText = "✓ മാർക്ക് ഗൂഗിൾ ഷീറ്റിലേക്ക് വിജയകരമായി രേഖപ്പെടുത്തി!";
+        statusDiv.className = "text-xs text-emerald-400";
       })
       .catch(() => {
         statusDiv.innerText = "ഡാറ്റ സേവ് ചെയ്യുന്നതിൽ ചെറിയ തടസ്സം നേരിട്ടു.";
-        statusDiv.className = "text-xs text-rose-400 mb-4";
+        statusDiv.className = "text-xs text-rose-400";
       });
     }
 
@@ -506,9 +592,9 @@
         const isSkipped = uAns === null;
 
         let badge = isSkipped 
-          ? '<span class="px-2 py-0.5 rounded text-xs bg-slate-700 text-slate-300">Skipped (മാർക്ക് മാറ്റമില്ല)</span>'
+          ? '<span class="px-2 py-0.5 rounded text-xs bg-slate-700 text-slate-300">Skipped (മാർക്ക് മാറ്റമില്ല)</span>' 
           : isCorrect 
-          ? '<span class="px-2 py-0.5 rounded text-xs bg-emerald-950 text-emerald-400 border border-emerald-800 font-bold">+1.00 Mark (ശരിയുത്തരം)</span>'
+          ? '<span class="px-2 py-0.5 rounded text-xs bg-emerald-950 text-emerald-400 border border-emerald-800 font-bold">+1.00 Mark (ശരിയുത്തരം)</span>' 
           : '<span class="px-2 py-0.5 rounded text-xs bg-rose-950 text-rose-400 border border-rose-800 font-bold">-0.33 Mark (തെറ്റ്)</span>';
 
         let optsHtml = '<div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2">';
@@ -533,13 +619,13 @@
         item.className = 'p-4 rounded-xl border border-slate-700 bg-slate-900/70 space-y-2';
         item.innerHTML = `
           <div class="flex justify-between items-start gap-2">
-            <span class="font-bold text-cyan-400 text-sm">ചോദ്യം ${idx + 1}</span>
+            <span class="font-bold text-violet-400 text-sm">ചോദ്യം ${idx + 1}</span>
             <div>${badge}</div>
           </div>
           <p class="text-sm font-medium text-slate-200 whitespace-pre-line">${q.q}</p>
           ${optsHtml}
           <div class="bg-slate-800/90 p-3 rounded-lg border border-slate-700 mt-2 text-xs leading-relaxed">
-            <span class="font-bold text-cyan-300">വിശദീകരണം:</span>
+            <span class="font-bold text-violet-300">വിശദീകരണം:</span>
             <span class="text-slate-300 ml-1">${q.exp}</span>
           </div>
         `;
@@ -547,12 +633,11 @@
       });
     }
 
-    // Direct Scorecard PDF Download
     document.getElementById('downloadPdfBtn').addEventListener('click', () => {
       const element = document.getElementById('pdfExportWrapper');
       const opt = {
         margin:       [10, 10, 10, 10],
-        filename:     `${currentUser.name}_Physics_Set1_Scorecard.pdf`,
+        filename:     `${currentUser.name}_Chemistry_Part1_Scorecard.pdf`,
         image:        { type: 'jpeg', quality: 0.98 },
         html2canvas:  { scale: 2, useCORS: true, backgroundColor: '#1e293b' },
         jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
@@ -577,121 +662,15 @@
       });
     });
 
-    // Fetch Live Leaderboard from Google Sheets (Filtered by Tab Name)
-    function fetchLiveLeaderboard() {
-      const modal = document.getElementById('leaderboardModal');
-      const loader = document.getElementById('leaderboardLoading');
-      const wrapper = document.getElementById('leaderboardTableWrapper');
-      const tbody = document.getElementById('leaderboardBody');
+    function returnToHomeWithData() {
+      const homePortalUrl = "https://subhash-kumar00.github.io/PSC-EXAMS/";
+      const score = document.getElementById('finalScore').innerText;
+      const correct = document.getElementById('correctCount').innerText;
+      const wrong = document.getElementById('wrongCount').innerText;
+      const skipped = document.getElementById('skipCount').innerText;
 
-      modal.classList.remove('hidden');
-      loader.classList.remove('hidden');
-      wrapper.classList.add('hidden');
-      tbody.innerHTML = '';
-
-      if (!GOOGLE_SHEET_WEBAPP_URL || GOOGLE_SHEET_WEBAPP_URL.includes("YOUR_APPS_SCRIPT_WEBAPP_URL_HERE")) {
-        loader.innerText = "Google Apps Script URL സെറ്റ് ചെയ്തിട്ടില്ല.";
-        return;
-      }
-
-      fetch(`${GOOGLE_SHEET_WEBAPP_URL}?sheet=${encodeURIComponent(QUIZ_SHEET_NAME)}`)
-        .then(res => res.json())
-        .then(data => {
-          loader.classList.add('hidden');
-          wrapper.classList.remove('hidden');
-
-          if (!data || data.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="4" class="py-6 text-center text-slate-500">ഇതുവരെ ആരും പരീക്ഷ പൂർത്തിയാക്കിയിട്ടില്ല.</td></tr>';
-            return;
-          }
-
-          data.sort((a, b) => b.score - a.score || b.correct - a.correct);
-
-          data.forEach((entry, idx) => {
-            const masked = entry.phone ? String(entry.phone).substring(0, 5) + '*****' : '---';
-            const row = document.createElement('tr');
-            row.className = 'hover:bg-slate-700/30 text-slate-300';
-            row.innerHTML = `
-              <td class="py-2.5 px-3 font-mono font-bold">${idx + 1}</td>
-              <td class="py-2.5 px-3 font-medium">${entry.name}</td>
-              <td class="py-2.5 px-3 font-mono text-xs text-slate-400">${masked}</td>
-              <td class="py-2.5 px-3 text-right font-mono font-bold text-cyan-400">${Number(entry.score).toFixed(2)}</td>
-            `;
-            tbody.appendChild(row);
-          });
-        })
-        .catch(() => {
-          loader.innerText = "റാങ്ക് ലിസ്റ്റ് ലോഡ് ചെയ്യാൻ കഴിഞ്ഞില്ല. ദയവായി അല്പം കഴിഞ്ഞ് ശ്രമിക്കുക.";
-        });
+      window.location.href = `${homePortalUrl}?completed=true&title=${encodeURIComponent(examTitle)}&score=${score}&correct=${correct}&wrong=${wrong}&skipped=${skipped}`;
     }
-
-    document.getElementById('loginForm').onsubmit = (e) => {
-      e.preventDefault();
-      const name = document.getElementById('candName').value.trim();
-      const phone = document.getElementById('candPhone').value.trim();
-
-      if (!name || phone.length !== 10) {
-        alert('ദയവായി ശരിയായ പേരും 10 അക്ക മൊബൈൽ നമ്പറും നൽകുക.');
-        return;
-      }
-
-      currentUser = { name, phone };
-      document.getElementById('displayUser').innerText = `${name} (${phone})`;
-      document.getElementById('userInfoHeader').classList.remove('hidden');
-
-      loginCard.classList.add('hidden');
-      quizScreen.classList.remove('hidden');
-      buildPalette();
-      renderQuestion(0);
-      startTimer();
-    };
-
-    document.getElementById('viewRankBtn').onclick = fetchLiveLeaderboard;
-    document.getElementById('showLeaderboardBtn').onclick = fetchLiveLeaderboard;
-    document.getElementById('closeLeaderboardBtn').onclick = () => {
-      document.getElementById('leaderboardModal').classList.add('hidden');
-    };
-    document.getElementById('closeLeaderboardBtn2').onclick = () => {
-      document.getElementById('leaderboardModal').classList.add('hidden');
-    };
-    // ഹോം പേജിൽ നിന്ന് വരുന്ന പേര്, ഫോൺ, Sheet URL, PDF URL എന്നിവ സ്വയം ഏറ്റെടുക്കുന്നു:
-    window.addEventListener('DOMContentLoaded', () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const passedName = urlParams.get('name');
-      const passedPhone = urlParams.get('phone');
-      const passedSheetUrl = urlParams.get('sheetUrl');
-      const passedPdfUrl = urlParams.get('pdfUrl');
-
-      // ഹോം ഷീറ്റിൽ നൽകിയിട്ടുള്ള Google Apps Script URL ക്വിസിലേക്ക് നൽകുന്നു:
-      if (passedSheetUrl) {
-        GOOGLE_SHEET_WEBAPP_URL = decodeURIComponent(passedSheetUrl);
-      }
-
-      // ഹോം ഷീറ്റിൽ നൽകിയിട്ടുള്ള ഡ്രൈവ് PDF ലിങ്ക് ക്വിസിലേക്ക് നൽകുന്നു:
-      if (passedPdfUrl) {
-        ORIGINAL_PDF_URL = decodeURIComponent(passedPdfUrl);
-      }
-
-      if (passedName && passedPhone) {
-        currentUser = {
-          name: decodeURIComponent(passedName),
-          phone: decodeURIComponent(passedPhone)
-        };
-
-        const displayUser = document.getElementById('displayUser');
-        const userInfoHeader = document.getElementById('userInfoHeader');
-        const loginCard = document.getElementById('loginCard');
-
-        if (displayUser) displayUser.innerText = `${currentUser.name} (+91 ${currentUser.phone})`;
-        if (userInfoHeader) userInfoHeader.classList.remove('hidden');
-        if (loginCard) loginCard.classList.add('hidden');
-
-        // ലോഗിൻ ഒഴിവാക്കി നേരിട്ട് പരീക്ഷ തുടങ്ങുന്നു
-        setTimeout(() => {
-          triggerMotivationAndStart();
-        }, 150);
-      }
-    });
   </script>
 </body>
 </html>
