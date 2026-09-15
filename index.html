@@ -736,8 +736,7 @@
       const skipped = document.getElementById('skipCount').innerText;
 
       window.location.href = `${homePortalUrl}?completed=true&title=${encodeURIComponent(examTitle)}&score=${score}&correct=${correct}&wrong=${wrong}&skipped=${skipped}`;
-    }
-    function startCountdownAndStartExam() {
+    }function startCountdownAndStartExam() {
       let count = 3;
       const countElem = document.getElementById('countdownNumber');
       if (countElem) countElem.innerText = count;
@@ -746,9 +745,7 @@
         count--;
         if (countElem) countElem.innerText = count;
 
-        if (count > 0) {
-          // കൗണ്ട് തുടരുന്നു
-        } else {
+        if (count <= 0) {
           clearInterval(countdownTimer);
 
           // 1. സ്വാഗത സ്ക്രീൻ മറയ്ക്കുന്നു
