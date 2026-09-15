@@ -227,9 +227,9 @@
     // =========================================================================
     // ⚠️ 1. ഈ 3 വേരിയബിളുകൾ മാത്രം നിങ്ങളുടെ വിവരങ്ങൾ വെച്ച് മാറ്റുക:
     // =========================================================================
-    const GOOGLE_SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzz16_cHXqIxioiMN1INEK6z_29Q7nnroM02tNgHapEx3ng8ngIgGmXOMXO3icNydE/exec"; // നിങ്ങളുടെ Apps Script Web App URL
+    let GOOGLE_SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzz16_cHXqIxioiMN1INEK6z_29Q7nnroM02tNgHapEx3ng8ngIgGmXOMXO3icNydE/exec"; // നിങ്ങളുടെ Apps Script Web App URL
     const QUIZ_SHEET_NAME = "Physics_Set1"; // നിങ്ങളുടെ ഗൂഗിൾ ഷീറ്റിൽ ഈ പേജിലേക്ക് (Tab) ഡാറ്റ തനിയെ പോകും
-    const ORIGINAL_PDF_URL = "https://drive.google.com/file/d/1TBwJzSOe70DR5r9h6S5yFUxvL2bZMvye/view?usp=sharing"; // ചോദ്യങ്ങളുടെ PDF ഡ്രൈവ് ലിങ്ക്
+    let ORIGINAL_PDF_URL = "https://drive.google.com/file/d/1TBwJzSOe70DR5r9h6S5yFUxvL2bZMvye/view?usp=sharing"; // ചോദ്യങ്ങളുടെ PDF ഡ്രൈവ് ലിങ്ക്
 
     // 50 Questions directly from the Physics Set 1 PDF
     const questionsData = [
@@ -654,22 +654,42 @@
     document.getElementById('closeLeaderboardBtn2').onclick = () => {
       document.getElementById('leaderboardModal').classList.add('hidden');
     };
-    // ഹോം പേജിൽ നിന്ന് വരുന്ന പേരും നമ്പറും സ്വയം തിരിച്ചറിഞ്ഞ് ലോഗിൻ ഒഴിവാക്കാൻ:
+    // ഹോം പേജിൽ നിന്ന് വരുന്ന പേര്, ഫോൺ, Sheet URL, PDF URL എന്നിവ സ്വയം ഏറ്റെടുക്കുന്നു:
     window.addEventListener('DOMContentLoaded', () => {
       const urlParams = new URLSearchParams(window.location.search);
       const passedName = urlParams.get('name');
       const passedPhone = urlParams.get('phone');
+      const passedSheetUrl = urlParams.get('sheetUrl');
+      const passedPdfUrl = urlParams.get('pdfUrl');
+
+      // ഹോം ഷീറ്റിൽ നൽകിയിട്ടുള്ള Google Apps Script URL ക്വിസിലേക്ക് നൽകുന്നു:
+      if (passedSheetUrl) {
+        GOOGLE_SHEET_WEBAPP_URL = decodeURIComponent(passedSheetUrl);
+      }
+
+      // ഹോം ഷീറ്റിൽ നൽകിയിട്ടുള്ള ഡ്രൈവ് PDF ലിങ്ക് ക്വിസിലേക്ക് നൽകുന്നു:
+      if (passedPdfUrl) {
+        ORIGINAL_PDF_URL = decodeURIComponent(passedPdfUrl);
+      }
 
       if (passedName && passedPhone) {
         currentUser = {
           name: decodeURIComponent(passedName),
           phone: decodeURIComponent(passedPhone)
         };
-        document.getElementById('displayUser').innerText = `${currentUser.name} (+91 ${currentUser.phone})`;
-        document.getElementById('userInfoHeader').classList.remove('hidden');
 
-        // ലോഗിൻ സ്ക്രീൻ ഒഴിവാക്കി നേരിട്ട് പരീക്ഷ തുടങ്ങുന്നു
-        triggerMotivationAndStart();
+        const displayUser = document.getElementById('displayUser');
+        const userInfoHeader = document.getElementById('userInfoHeader');
+        const loginCard = document.getElementById('loginCard');
+
+        if (displayUser) displayUser.innerText = `${currentUser.name} (+91 ${currentUser.phone})`;
+        if (userInfoHeader) userInfoHeader.classList.remove('hidden');
+        if (loginCard) loginCard.classList.add('hidden');
+
+        // ലോഗിൻ ഒഴിവാക്കി നേരിട്ട് പരീക്ഷ തുടങ്ങുന്നു
+        setTimeout(() => {
+          triggerMotivationAndStart();
+        }, 150);
       }
     });
   </script>
